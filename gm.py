@@ -55,35 +55,35 @@ def initialise_gm():
 
 class game:
     def __init__(self, name):
-        self.id = 'game_' + '{:%Y%m%d%H%M%S%f}'.format(datetime.now())
+        self.id = "game_" + "{:%Y%m%d%H%M%S%f}".format(datetime.now())
         self.name = name
         self.details = {detail: "NA" for detail in GAME_DETAILS}
     def __str__(self):
-        return f'Game: {self.name} (ID: {self.id})'
+        return f"Game: {self.name} (ID: {self.id})"
     
     def ask_details(self):
         for detail in GAME_DETAILS:
-            self.details[detail] = input(f'What is the {DETAIL_DF.loc[detail, "string"]}? ')
+            self.details[detail] = input(f"What is the {DETAIL_DF.loc[detail, "string"]}? ")
     def get_details(self):
         return self.details
     def print_details(self):
         for detail in self.details:
-            print(f'The {DETAIL_DF.loc[detail, "string"]} of {self.name} is {self.details[detail]}')
+            print(f"The {DETAIL_DF.loc[detail, 'string']} of {self.name} is {self.details[detail]}")
     
     def set_single_detail(self, detail, value):
         self.details[detail] = value
     def get_single_detail(self, detail):
         return self.details[detail]
     def print_single_detail(self, detail):
-        print(f'The {DETAIL_DF.loc[detail, "string"]} of {self.name} is {self.details[detail]}')
+        print(f"The {DETAIL_DF.loc[detail, 'string']} of {self.name} is {self.details[detail]}")
 
 class collection:
     def __init__(self, name):
-        self.id = 'col_' + '{:%Y%m%d%H%M%S%f}'.format(datetime.now())
+        self.id = "col_" + '{:%Y%m%d%H%M%S%f}'.format(datetime.now())
         self.name = name
         self.list = []
     def __str__(self):
-        return f'Collection: {self.name} (ID: {self.id})'
+        return f"Collection: {self.name} (ID: {self.id})"
     
     def add_
     
@@ -93,7 +93,7 @@ class collection:
 
 initialise_gm()
 # print(DETAIL_DF)
-tichu = game('Tichu')
+tichu = game("Tichu")
 print(tichu)
 # tichu.ask_details()
 print(tichu.get_details())
