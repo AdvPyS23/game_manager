@@ -79,7 +79,7 @@ class game:
 
 class collection:
     def __init__(self, name):
-        self.id = "col_" + '{:%Y%m%d%H%M%S%f}'.format(datetime.now())
+        self.id = "col_" + "{:%Y%m%d%H%M%S%f}".format(datetime.now())
         self.name = name
         self.list = []
     def __str__(self):
@@ -88,7 +88,7 @@ class collection:
         
 class history:
     def __init__(self, name):
-        self.id = "history_" + '{:%Y%m%d%H%M%S%f}'.format(datetime.now())
+        self.id = "history_" + "{:%Y%m%d%H%M%S%f}".format(datetime.now())
         self.name = name
     def __str__(self):
         return f"Game:{self.name} (ID: {self.id})"
