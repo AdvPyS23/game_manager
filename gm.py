@@ -11,7 +11,7 @@ def initialise_gm():
     global GAME_DETAILS
     global DETAIL_DF
     # Define the number of points to give for details such as complexity and difficulty
-    NUM_POINTS =  10    
+    NUM_POINTS =  10
     # Define the values to choose from for details such as topics, skills etc.
     TOPICS = ("Fantasy", "Science Fiction", "Real World", "Abstract", "Adaptation", "other")
     SKILLS = ("Logics", "Dexterity", "Intuition", "Creativity", "Knowledge", "Strategy", "Negotiation", "Luck", "Roleplay")
@@ -44,12 +44,13 @@ def initialise_gm():
                                 columns = DETAIL_COLS,
                                 index = GAME_DETAILS)
     # Consolidate and return in a dictionary
-    GAME_PROPERTIES = {"GAME_DETAILS": GAME_DETAILS,
-                       "NUM_POINTS": NUM_POINTS,
+    GAME_PROPERTIES = {"NUM_POINTS": NUM_POINTS,
                        "TOPICS": TOPICS,
                        "SKILLS": SKILLS,
                        "PHYSICAL_PARTS": PHYSICAL_PARTS,
-                       "SOCIAL_TYPES": SOCIAL_TYPES}
+                       "SOCIAL_TYPES": SOCIAL_TYPES,
+                       "GAME_DETAILS": GAME_DETAILS,
+                       "DETAIL_DF": DETAIL_DF}
     return GAME_PROPERTIES
 
 class game:
@@ -58,7 +59,7 @@ class game:
         self.name = name
         self.details = {detail: "NA" for detail in GAME_DETAILS}
     def __str__(self):
-        return f'{self.name} (ID: {self.id})'
+        return f'Game: {self.name} (ID: {self.id})'
     
     def ask_details(self):
         for detail in GAME_DETAILS:
@@ -76,6 +77,17 @@ class game:
     def print_single_detail(self, detail):
         print(f'The {DETAIL_DF.loc[detail, "string"]} of {self.name} is {self.details[detail]}')
 
+class collection:
+    def __init__(self, name):
+        self.id = 'col_' + '{:%Y%m%d%H%M%S%f}'.format(datetime.now())
+        self.name = name
+        self.list = []
+    def __str__(self):
+        return f'Collection: {self.name} (ID: {self.id})'
+    
+    def add_
+    
+    
 # gm = initialise_gm""
 # print(gm["NUM_POINTS"])
 
