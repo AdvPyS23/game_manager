@@ -6,7 +6,7 @@ ___Authors: Sabrina Rasch, Roman Schwob___
 
 License: [GNU GPLv3](./LICENSE)
 
-For details on the implementation such as milestones, please also refer to the [Roadmap](./roadmap.md).
+For details on the implementation such as milestones, please also refer to the [Roadmap](./ROADMAP.md).
 
 ## Description
 
