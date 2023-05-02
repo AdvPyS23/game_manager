@@ -19,5 +19,8 @@ skills              Logics, Dexterity, Intuition, Creativity, Knowledge, Strateg
 physical_parts      board, cards, dice, supplementals, other
 social_type         cooperative, 1_v_all, teams, all_v_all, other
 
+Collection
+===
+
 History
 ===
