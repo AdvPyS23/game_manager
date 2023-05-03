@@ -1,4 +1,4 @@
-# Gam3 man@ger
+# Game Manager
 
 This project is part of the course "Advanced Python", University of Bern, Spring Semester 2023.
 
@@ -10,7 +10,7 @@ For details on the implementation such as milestones, please also refer to the [
 
 ## Description
 
-Gam3 man@ger is a little python tool to organise your social games. It also helps you find a good fit for your game event and gives suggestions for the next purchase.
+Game Manager is a little python tool to organise your social games. It also helps you find a good fit for your game event and gives suggestions for the next purchase.
 
 The tool addresses all fans of board and card games and many more. It will especially help people that own a variety of games to keep an overview and make easier choices for any opportunity.
 

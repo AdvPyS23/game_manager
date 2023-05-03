@@ -1,4 +1,4 @@
-# Data Structure
+# Game Manager - Data Structure
 
 ## Games (class, stored in library df saved in file .gmlib)
 Variable        | Type   | Unit/Entry

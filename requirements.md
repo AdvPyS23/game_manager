@@ -1,4 +1,4 @@
-# Gam3 Man@ger - requirements
+# Game Manager - Requirements
 
 In order to be able to run this program, make sure your system meets following requirements:
 
