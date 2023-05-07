@@ -16,7 +16,7 @@ def initialise_gm():
     TOPICS = ("Fantasy", "Science Fiction", "Real World", "Abstract", "Adaptation", "other")
     SKILLS = ("Logics", "Dexterity", "Intuition", "Creativity", "Knowledge", "Strategy", "Negotiation", "Luck", "Roleplay")
     PHYSICAL_PARTS = ("board", "cards", "dice", "supplementals", "other")    
-    SOCIAL_TYPES = ("cooperative", "1_v_all", "teams", "all_v_all", "other")
+    SOCIAL_TYPES = ("cooperative", "one_v_all", "teams", "all_v_all", "other")
     # Define all the details a game has information about
     GAME_DETAILS = ("min_num_players",
                     "max_num_players",
