@@ -1,6 +1,6 @@
+from datetime import datetime
 import numpy as np
 import pandas as pd
-from datetime import datetime
 
 def initialise_gm():
     global NUM_POINTS
@@ -29,7 +29,7 @@ def initialise_gm():
                     "skills",
                     "physical_parts",
                     "social_type")
-    DETAIL_COLS = ("string", "type", "allowed_values")
+    detail_cols = ("string", "type", "allowed_values")
     DETAIL_DF = pd.DataFrame(np.array([["minimum number of players", "int", ""],
                                           ["maximum number of players", "int", ""],
                                           ["minimum duration (minutes)", "int", ""],
@@ -41,19 +41,19 @@ def initialise_gm():
                                           [f"skill needed ({', '.join(SKILLS)})", "choice", "SKILLS"], # SKILLS],
                                           [f"physical part ({', '.join(PHYSICAL_PARTS)})", "choice", "PHYSICAL_PARTS"], # PHYSICAL_PARTS],
                                           [f"social type ({', '.join(SOCIAL_TYPES)})", "choice", "SOCIAL_TPYES"]]), # SOCIAL_TYPES]]))
-                                columns = DETAIL_COLS,
+                                columns = detail_cols,
                                 index = GAME_DETAILS)
     # Consolidate and return in a dictionary
-    GAME_PROPERTIES = {"NUM_POINTS": tuple(n+1 for n in range(NUM_POINTS)),
+    game_properties = {"NUM_POINTS": tuple(n+1 for n in range(NUM_POINTS)),
                        "TOPICS": TOPICS,
                        "SKILLS": SKILLS,
                        "PHYSICAL_PARTS": PHYSICAL_PARTS,
                        "SOCIAL_TYPES": SOCIAL_TYPES,
                        "GAME_DETAILS": GAME_DETAILS,
                        "DETAIL_DF": DETAIL_DF}
-    return GAME_PROPERTIES
+    return game_properties
 
-class game:
+class Game:
     def __init__(self, name):
         self.id = "game_" + "{:%Y%m%d%H%M%S%f}".format(datetime.now())
         self.name = name
@@ -77,7 +77,7 @@ class game:
     def print_single_detail(self, detail):
         print(f"The {DETAIL_DF.loc[detail, 'string']} of {self.name} is {self.details[detail]}")
 
-class collection:
+class Collection:
     def __init__(self, name):
         self.id = "col_" + "{:%Y%m%d%H%M%S%f}".format(datetime.now())
         self.name = name
@@ -86,7 +86,7 @@ class collection:
         return f"Collection: {self.name} (ID: {self.id})"
 
 
-class history:
+class History:
     def __init__(self, name):
         self.id = "history_" + "{:%Y%m%d%H%M%S%f}".format(datetime.now())
         self.name = name
@@ -99,7 +99,7 @@ class history:
 
 initialise_gm()
 # print(DETAIL_DF)
-tichu = game("Tichu")
+tichu = Game("Tichu")
 print(tichu)
 tichu.ask_details()
 print(tichu.get_details())
