@@ -15,7 +15,7 @@ def initialise_gm():
     # Define the values to choose from for details such as topics, skills etc.
     TOPICS = ("Fantasy", "Science Fiction", "Real World", "Abstract", "Adaptation", "other")
     SKILLS = ("Logics", "Dexterity", "Intuition", "Creativity", "Knowledge", "Strategy", "Negotiation", "Luck", "Roleplay")
-    PHYSICAL_PARTS = ("board", "cards", "dice", "supplementals", "other")    
+    PHYSICAL_PARTS = ("board", "cards", "dice", "supplementals", "other")
     SOCIAL_TYPES = ("cooperative", "one_v_all", "teams", "all_v_all", "other")
     # Define all the details a game has information about
     GAME_DETAILS = ("min_num_players",
@@ -60,7 +60,7 @@ class game:
         self.details = {detail: "NA" for detail in GAME_DETAILS}
     def __str__(self):
         return f"Game: {self.name} (ID: {self.id})"
-    
+
     def ask_details(self):
         for detail in GAME_DETAILS:
             self.details[detail] = input(f"What is the {DETAIL_DF.loc[detail, 'string']}? ")
@@ -69,7 +69,7 @@ class game:
     def print_details(self):
         for detail in self.details:
             print(f"The {DETAIL_DF.loc[detail, 'string']} of {self.name} is {self.details[detail]}")
-    
+
     def set_single_detail(self, detail, value):
         self.details[detail] = value
     def get_single_detail(self, detail):
@@ -84,16 +84,16 @@ class collection:
         self.list = []
     def __str__(self):
         return f"Collection: {self.name} (ID: {self.id})"
-    
-        
+
+
 class history:
     def __init__(self, name):
         self.id = "history_" + "{:%Y%m%d%H%M%S%f}".format(datetime.now())
         self.name = name
     def __str__(self):
         return f"Game:{self.name} (ID: {self.id})"
-    
-    
+
+
 # gm = initialise_gm""
 # print(gm["NUM_POINTS"])
 
