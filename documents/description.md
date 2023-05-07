@@ -1,4 +1,4 @@
-# Games Manager
+# Game Manager
 Create a manager of social games to help users store, organize, and discover new games.
 
 ## Task 1 - Games Storage and Organization
