@@ -35,16 +35,16 @@ def initialise_gm():
                                           ["minimum duration (minutes)", "int", ""],
                                           ["maximum duration (minutes)", "int", ""],
                                           ["minimum age (years)", "int", ""],
-                                          [f"complexity level (1 - {NUM_POINTS})", "int_range", ""], # tuple(n+1 for n in range(NUM_POINTS))],
-                                          [f"difficulty level (1 - {NUM_POINTS})", "int_range", ""],  # tuple(n+1 for n in range(NUM_POINTS))],
-                                          [f"topic ({', '.join(TOPICS)})", "choice", ""], # TOPICS],
-                                          [f"skills needed ({', '.join(SKILLS)})", "choice", ""], # SKILLS],
-                                          [f"physical parts ({', '.join(PHYSICAL_PARTS)})", "choice", ""], # PHYSICAL_PARTS],
-                                          [f"social type ({', '.join(SOCIAL_TYPES)})", "choice", ""]]), # SOCIAL_TYPES]]))
+                                          [f"complexity level (1 - {NUM_POINTS})", "int_range", "NUM_POINTS"], # tuple(n+1 for n in range(NUM_POINTS))],
+                                          [f"difficulty level (1 - {NUM_POINTS})", "int_range", "NUM_POINTS"],  # tuple(n+1 for n in range(NUM_POINTS))],
+                                          [f"topic ({', '.join(TOPICS)})", "choice", "TOPICS"], # TOPICS],
+                                          [f"skill needed ({', '.join(SKILLS)})", "choice", "SKILLS"], # SKILLS],
+                                          [f"physical part ({', '.join(PHYSICAL_PARTS)})", "choice", "PHYSICAL_PARTS"], # PHYSICAL_PARTS],
+                                          [f"social type ({', '.join(SOCIAL_TYPES)})", "choice", "SOCIAL_TPYES"]]), # SOCIAL_TYPES]]))
                                 columns = DETAIL_COLS,
                                 index = GAME_DETAILS)
     # Consolidate and return in a dictionary
-    GAME_PROPERTIES = {"NUM_POINTS": NUM_POINTS,
+    GAME_PROPERTIES = {"NUM_POINTS": tuple(n+1 for n in range(NUM_POINTS)),
                        "TOPICS": TOPICS,
                        "SKILLS": SKILLS,
                        "PHYSICAL_PARTS": PHYSICAL_PARTS,
@@ -63,7 +63,7 @@ class game:
     
     def ask_details(self):
         for detail in GAME_DETAILS:
-            self.details[detail] = input(f"What is the {DETAIL_DF.loc[detail, "string"]}? ")
+            self.details[detail] = input(f"What is the {DETAIL_DF.loc[detail, 'string']}? ")
     def get_details(self):
         return self.details
     def print_details(self):
@@ -101,7 +101,7 @@ initialise_gm()
 # print(DETAIL_DF)
 tichu = game("Tichu")
 print(tichu)
-# tichu.ask_details()
+tichu.ask_details()
 print(tichu.get_details())
 tichu.print_details()
 tichu.set_single_detail("topic", "SciFi")
