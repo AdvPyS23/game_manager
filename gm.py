@@ -1,3 +1,19 @@
+"""
+This is the main script to run the game manager.
+
+
+Classes:
+    Game
+        _summary_
+    Collection
+        _summary_
+    History
+        _summary_
+
+Functions:
+    _summary_
+"""
+
 from datetime import datetime
 import numpy as np
 import pandas as pd
@@ -54,8 +70,39 @@ def initialise_gm():
     return game_properties
 
 class Game:
+    """
+    _summary_
+
+    ...
+
+    Attributes
+    ----------
+    id : _type_
+        _summary_
+    name : _type_
+        _summary_
+    detail : _type_
+        _summary_
+
+    Methods
+    -------
+    ask_details(self):
+        _summary_
+    get_details(self):
+        _summary_
+    print_details(self):
+        _summary_
+    
+    set_single_detail(self, detail, value):
+        _summary_
+    get_single_detail(self, detail):
+        _summary_
+    print_single_detail(self, detail, value):
+        _summary_
+    """
+
     def __init__(self, name):
-        self.id = "game_" + "{:%Y%m%d%H%M%S%f}".format(datetime.now())
+        self.id = f"game_{datetime.now():%Y%m%d%H%M%S%f}"
         self.name = name
         self.details = {detail: "NA" for detail in GAME_DETAILS}
     def __str__(self):
@@ -78,8 +125,28 @@ class Game:
         print(f"The {DETAIL_DF.loc[detail, 'string']} of {self.name} is {self.details[detail]}")
 
 class Collection:
+    """
+    _summary_
+
+    ...
+
+    Attributes
+    ----------
+    id : _type_
+        _summary_
+    name : _type_
+        _summary_
+    list : _type_
+        _summary_
+
+    Methods
+    -------
+    _name_:
+        _summary_
+    """
+
     def __init__(self, name):
-        self.id = "col_" + "{:%Y%m%d%H%M%S%f}".format(datetime.now())
+        self.id = f"col_{datetime.now():%Y%m%d%H%M%S%f}"
         self.name = name
         self.list = []
     def __str__(self):
@@ -87,8 +154,26 @@ class Collection:
 
 
 class History:
+    """
+    _summary_
+
+    ...
+
+    Attributes
+    ----------
+    id : _type_
+        _summary_
+    name : _type_
+        _summary_
+
+    Methods
+    -------
+    _name_:
+        _summary_
+    """
+
     def __init__(self, name):
-        self.id = "history_" + "{:%Y%m%d%H%M%S%f}".format(datetime.now())
+        self.id = f"history_{datetime.now():%Y%m%d%H%M%S%f}"
         self.name = name
     def __str__(self):
         return f"Game:{self.name} (ID: {self.id})"
