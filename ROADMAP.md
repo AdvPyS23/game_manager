@@ -1,8 +1,8 @@
-# Gam3 man@ger - RoadMap
+# Game Manager - RoadMap
 
 ## Mission and Summary
 
-Welcome to Gam3 man@ger, a little python tool to organise your social games. For details, please also refer to the [README.md](./README.md).
+Welcome to Game Manager, a little python tool to organise your social games. For details, please also refer to the [README.md](./README.md).
 
 
 ## Milestones
