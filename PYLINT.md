@@ -80,4 +80,29 @@ gm.py:127:0: R0903: Too few public methods (1/2) (too-few-public-methods)
 gm.py:176:8: C0103: Attribute name "id" doesn't conform to snake_case naming style (invalid-name)    
 gm.py:156:0: R0903: Too few public methods (1/2) (too-few-public-methods)    
 
-**Your code has been rated at 5.94/10 (previous run: 5.00/10, +2.19)**
+**Your code has been rated at 5.94/10 (previous run: 2.81/10, +2.19)**
+
+## pylint second run
+gm.py:25:0: C0301: Line too long (119/100) (line-too-long)
+gm.py:46:0: C0301: Line too long (108/100) (line-too-long)
+gm.py:47:0: C0301: Line too long (108/100) (line-too-long)
+gm.py:50:0: C0301: Line too long (113/100) (line-too-long)
+gm.py:51:0: C0301: Line too long (109/100) (line-too-long)
+gm.py:106:0: C0301: Line too long (196/100) (line-too-long)
+gm.py:109:0: C0301: Line too long (110/100) (line-too-long)
+gm.py:111:0: C0301: Line too long (127/100) (line-too-long)
+gm.py:113:0: C0301: Line too long (122/100) (line-too-long)
+gm.py:98:8: C0103: Attribute name "id" doesn't conform to snake_case naming style (invalid-name)
+gm.py:104:4: C0116: Missing function or method docstring (missing-function-docstring)
+gm.py:116:4: C0116: Missing function or method docstring (missing-function-docstring)
+gm.py:118:4: C0116: Missing function or method docstring (missing-function-docstring)
+gm.py:122:4: C0116: Missing function or method docstring (missing-function-docstring)
+gm.py:124:4: C0116: Missing function or method docstring (missing-function-docstring)
+gm.py:126:4: C0116: Missing function or method docstring (missing-function-docstring)
+gm.py:151:8: C0103: Attribute name "id" doesn't conform to snake_case naming style (invalid-name)
+gm.py:129:0: R0903: Too few public methods (1/2) (too-few-public-methods)
+gm.py:178:8: C0103: Attribute name "id" doesn't conform to snake_case naming style (invalid-name)
+gm.py:158:0: R0903: Too few public methods (1/2) (too-few-public-methods)
+
+------------------------------------------------------------------
+**Your code has been rated at 6.55/10 (previous run: 5.94/10, +0.61)**
