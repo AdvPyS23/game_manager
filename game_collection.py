@@ -21,22 +21,22 @@ import pandas as pd
 # Define the number of points to give for details such as complexity and difficulty
 NUM_POINTS =  10
 # Define the values to choose from for details such as topics, skills etc.
-TOPICS = ("Fantasy",
-          "Science Fiction",
-          "Real World",
-          "Abstract",
-          "Adaptation",
+TOPICS = ("fantasy",
+          "science fiction",
+          "real world",
+          "abstract",
+          "adaptation",
           "other")
 
-SKILLS = ("Logics",
-          "Dexterity",
-          "Intuition",
-          "Creativity",
-          "Knowledge",
-          "Strategy",
-          "Negotiation",
-          "Luck",
-          "Roleplay",
+SKILLS = ("logics",
+          "dexterity",
+          "intuition",
+          "creativity",
+          "knowledge",
+          "strategy",
+          "negotiation",
+          "luck",
+          "roleplay",
           "other")
 
 PHYSICAL_PARTS = ("board",
@@ -52,7 +52,8 @@ SOCIAL_TYPES = ("cooperative",
                 "other")
 
 # Define all the details a game has information about
-GAME_DETAILS = ("min_num_players",
+GAME_DETAILS = ("name",
+                "min_num_players",
                 "max_num_players",
                 "min_duration",
                 "max_duration",
@@ -70,7 +71,8 @@ DETAILS_COLS = ("string",
                 "allowed_values")
 
 # Create data frame with the details a game can have
-DETAIL_DF = pd.DataFrame(np.array([["minimum number of players", "int", ">=1"],
+DETAIL_DF = pd.DataFrame(np.array([["name of the game", "any", "any"],
+                                   ["minimum number of players", "int", ">=1"],
                                    ["maximum number of players", "int", ">=min_num_players"],
                                    ["minimum duration (minutes)", "int", ">=1"],
                                    ["maximum duration (minutes)", "int", ">=min_duration"],
@@ -83,14 +85,15 @@ DETAIL_DF = pd.DataFrame(np.array([["minimum number of players", "int", ">=1"],
                                    [f"social type ({', '.join(SOCIAL_TYPES)})", "string", "SOCIAL_TYPES"]]),
                                 columns = DETAILS_COLS,
                                 index = GAME_DETAILS)
-GAME_PROPERTIES = {">=1": [">=1"],
-                   ">=min_num_players" : [">=minimum number of players"],
-                   ">=min_duration" :[">=minimum duration"],
-                   "1 - NUM_POINTS": [f"1 - {NUM_POINTS}"],
-                   "TOPICS": TOPICS,
-                   "SKILLS": SKILLS,
-                   "PHYSICAL_PARTS": PHYSICAL_PARTS,
-                   "SOCIAL_TYPES": SOCIAL_TYPES}
+GAME_PROPERTIES = {"any":["any"],
+                    ">=1":[">=1"],
+                   ">=min_num_players":[">=minimum number of players"],
+                   ">=min_duration":[">=minimum duration"],
+                   "1 - NUM_POINTS":[f"1 - {NUM_POINTS}"],
+                   "TOPICS":TOPICS,
+                   "SKILLS":SKILLS,
+                   "PHYSICAL_PARTS":PHYSICAL_PARTS,
+                   "SOCIAL_TYPES":SOCIAL_TYPES}
 
 class Game:
     """
@@ -132,33 +135,71 @@ class Game:
         return f"Game: {self.game_name} (ID: {self.game_id})"
 
     def ask_details(self):
+        """
+        _summary_
+
+        Returns:
+            _type_: _description_
+        """
         for detail in GAME_DETAILS:
             prompts = chain([f"What is the {DETAIL_DF.loc[detail, 'string']}?"], repeat(f"Sorry, the input must be {', '.join(GAME_PROPERTIES[DETAIL_DF['allowed_values'][detail]])}. Try again:"))
             replies = map(input, prompts)
-            if DETAIL_DF.loc[detail, 'type'] == "int":
+            if DETAIL_DF.loc[detail, "type"] == "int":
                 valid_response = next(filter(lambda replies: (replies.isdigit() and int(replies)>0), replies))
-            elif DETAIL_DF.loc[detail, 'type'] == "int_range":
+            elif DETAIL_DF.loc[detail, "type"] == "int_range":
                 valid_response = next(filter(lambda replies: (replies.isdigit() and 1 <= int(replies) <= NUM_POINTS), replies))
-            elif DETAIL_DF.loc[detail, 'type'] == "string":
-                valid_response = next(filter(GAME_PROPERTIES[DETAIL_DF['allowed_values'][detail]].__contains__, replies))
+            elif DETAIL_DF.loc[detail, "type"] == "string":
+                valid_response = next(filter(GAME_PROPERTIES[DETAIL_DF["allowed_values"][detail]].__contains__, replies))
+            elif DETAIL_DF.loc[detail, "type"] == "any":
+                valid_response = input(f"What is the {DETAIL_DF.loc[detail, 'string']}?")
             self.details[detail] = valid_response
         return self.details
     def get_details(self):
+        """
+        _summary_
+
+        Returns:
+            _type_: _description_
+        """
         return self.details
     def print_details(self):
+        """
+        _summary_
+
+        Returns:
+            _type_: _description_
+        """
         for detail in self.details:
             print(f"The {DETAIL_DF.loc[detail, 'string']} of {self.game_name} is {self.details[detail]}")
 
     def set_single_detail(self, detail, value):
-        if DETAIL_DF.loc[detail, 'type'] == "int" and int(value)>0:
+        """
+        _summary_
+
+        Returns:
+            _type_: _description_
+        """
+        if DETAIL_DF.loc[detail, "type"] == "int" and int(value)>0:
             self.details[detail] = value
-        elif DETAIL_DF.loc[detail, 'type'] == "int_range" and value.isdigit() and 1 <= int(value) <= NUM_POINTS:
+        elif DETAIL_DF.loc[detail, "type"] == "int_range" and value.isdigit() and 1 <= int(value) <= NUM_POINTS:
             self.details[detail] = value
-        elif DETAIL_DF.loc[detail, 'type'] == "string" and value in GAME_PROPERTIES[DETAIL_DF['allowed_values'][detail]]:
+        elif DETAIL_DF.loc[detail, "type"] == "string" and value in GAME_PROPERTIES[DETAIL_DF["allowed_values"][detail]]:
             self.details[detail] = value
     def get_single_detail(self, detail):
+        """
+        _summary_
+
+        Returns:
+            _type_: _description_
+        """
         return self.details[detail]
     def print_single_detail(self, detail):
+        """
+        _summary_
+
+        Returns:
+            _type_: _description_
+        """
         print(f"The {DETAIL_DF.loc[detail, 'string']} of {self.game_name} is {self.details[detail]}")
 
 class Collection:
@@ -198,41 +239,71 @@ class Collection:
         return f"Collection: {self.col_name} (ID: {self.col_id})"
 
     def load_collection(self):
+        """
+        _summary_
+
+        Returns:
+            _type_: _description_
+        """
         data_file = "./collection.gmlib"
         if os.path.isfile(data_file):
-            with open('names.csv', newline='') as csvfile:
+            with open(data_file, newline="") as csvfile:
                 reader = csv.DictReader(csvfile)
                 for row in reader:
-                    print(row['game_id'], row['game_details'])
+                    self.dict = {"game_id":row["game_id"], "game_detail":row["game_details"]}
         else:
             print("There is no collection available.")
 
     def print_colleciton(self):
+        """
+        _summary_
+
+        Returns:
+            _type_: _description_
+        """
         for game_id, game_details in self.dict.items():
             print(game_id, game_details)
 
     def save_collection(self):
+        """
+        _summary_
+
+        Returns:
+            _type_: _description_
+        """
         data_file = "./collection.gmlib"
         if not os.path.isfile(data_file):
-            with open(data_file, 'a', newline='') as csvfile:
-                fieldnames = ['game_id', 'game_details']
+            with open(data_file, "a", newline="") as csvfile:
+                fieldnames = ["game_id", "game_details"]
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
                 for game_id, game_details in self.dict.items():
-                    writer.writerow({'game_id': game_id, 'game_details': game_details})
+                    writer.writerow({"game_id": game_id, "game_details": game_details})
         else:
-            with open(data_file, 'a', newline='') as csvfile:
-                fieldnames = ['game_id', 'game_details']
+            with open(data_file, "a", newline="") as csvfile:
+                fieldnames = ["game_id", "game_details"]
                 writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                 writer.writeheader()
                 for game_id, game_details in self.dict.items():
-                    writer.writerow({'game_id': game_id, 'game_details': game_details})
+                    writer.writerow({"game_id": game_id, "game_details": game_details})
 
     def add_game(self, game_id, game_details):
+        """
+        _summary_
+
+        Returns:
+            _type_: _description_
+        """
         self.dict[game_id] = game_details
         return self.dict
 
     def remove_game(self, game_id):
+        """
+        _summary_
+
+        Returns:
+            _type_: _description_
+        """
         del self.dict[game_id]
         return self.dict
 
@@ -244,11 +315,11 @@ class Collection:
 
 # tichu = Game("Tichu")
 # tichu.ask_details()
-# tichu.set_single_detail("topic", "Science Fiction")
+# tichu.set_single_detail("topic", "science fiction")
 
 # uno = Game("Uno")
 # uno.ask_details()
-# uno.set_single_detail("topic", "Fantasy")
+# uno.set_single_detail("topic", "fantasy")
 
 # print(tichu.game_id)
 # tichu.print_details()
