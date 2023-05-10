@@ -1,6 +1,6 @@
 # Game Manager - Data Structure
 
-## Games (class, stored in library df saved in file *Collection*.csv)
+## Games (class, stored in library df saved in file *Collection*.gmlib)
 
 Variable        | Type      | Unit/Entry
 ----------------|-----------|-----------
@@ -18,7 +18,7 @@ skills          | string    | Logics, Dexterity, Intuition, Creativity, Knowledg
 physical_parts  | string    | board, cards, dice, supplementals, other
 social_type     | string    | cooperative, 1_v_all, teams, all_v_all, other
 
-## History (df saved in file history.csv)
+## History (df saved in file history.gmhist)
 Variable        | Type     | Unit/Entry
 ----------------|----------|-----------
 hist_ID         | string   | hist_%Y%m%d%H%M%S%f  
