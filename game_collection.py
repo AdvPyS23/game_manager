@@ -143,7 +143,10 @@ class Game:
         """
         for detail in GAME_DETAILS:
             prompts = chain([f"What is the {DETAIL_DF.loc[detail, 'string']}?"], repeat(f"Sorry, the input must be {', '.join(GAME_PROPERTIES[DETAIL_DF['allowed_values'][detail]])}. Try again:"))
-            replies = map(input, prompts)
+            if DETAIL_DF.loc[detail, "type"] == "string":
+                replies = map(lambda x: x.lower(), map(input, prompts))  # convert to lowercase for string inputs
+            else:
+                replies = map(input, prompts)
             if DETAIL_DF.loc[detail, "type"] == "int":
                 valid_response = next(filter(lambda replies: (replies.isdigit() and int(replies)>0), replies))
             elif DETAIL_DF.loc[detail, "type"] == "int_range":
@@ -183,8 +186,11 @@ class Game:
             self.details[detail] = value
         elif DETAIL_DF.loc[detail, "type"] == "int_range" and value.isdigit() and 1 <= int(value) <= NUM_POINTS:
             self.details[detail] = value
-        elif DETAIL_DF.loc[detail, "type"] == "string" and value in GAME_PROPERTIES[DETAIL_DF["allowed_values"][detail]]:
+        elif DETAIL_DF.loc[detail, "type"] == "string" and value.lower() in GAME_PROPERTIES[DETAIL_DF["allowed_values"][detail]]:
+            self.details[detail] = value.lower()
+        elif DETAIL_DF.loc[detail, "type"] == "any":
             self.details[detail] = value
+
     def get_single_detail(self, detail):
         """
         _summary_
@@ -315,7 +321,7 @@ class Collection:
 
 # tichu = Game("Tichu")
 # tichu.ask_details()
-# tichu.set_single_detail("topic", "science fiction")
+# tichu.set_single_detail("topic", "SCIENCE fiction")
 
 # uno = Game("Uno")
 # uno.ask_details()
