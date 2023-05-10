@@ -178,6 +178,8 @@ class Collection:
 
     Methods
     -------
+    load_collection(self):
+        _summary_
     print_colleciton(self):
         _summary_
     save_collection(self):
@@ -195,32 +197,36 @@ class Collection:
     def __str__(self):
         return f"Collection: {self.col_name} (ID: {self.col_id})"
 
-    # def load_collection(self):
-    #     data_file = "./collection.csv"
-    #     if os.path.isfile(data_file):
-    #         with open(data_file, "r") as file:
-    #             self.list = pd.read_csv(file)
-    #             for row in self.list:
-    #                 print(row)
-    #     else:
-    #         print("There is no collection available.")
+    def load_collection(self):
+        data_file = "./collection.gmlib"
+        if os.path.isfile(data_file):
+            with open('names.csv', newline='') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    print(row['game_id'], row['game_details'])
+        else:
+            print("There is no collection available.")
 
     def print_colleciton(self):
         for game_id, game_details in self.dict.items():
             print(game_id, game_details)
 
     def save_collection(self):
-        data_file = "./collection.csv"
+        data_file = "./collection.gmlib"
         if not os.path.isfile(data_file):
-            with open(data_file, "a", newline="") as file:
-                writer_item = csv.writer(file)
-                for new_k, new_v in self.dict.items():
-                    writer_item.writerow([new_k, new_v])
+            with open(data_file, 'a', newline='') as csvfile:
+                fieldnames = ['game_id', 'game_details']
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                for game_id, game_details in self.dict.items():
+                    writer.writerow({'game_id': game_id, 'game_details': game_details})
         else:
-            with open(data_file, "a", newline="") as file:
-                writer_item = csv.writer(file)
-                for new_k, new_v in self.dict.items():
-                    writer_item.writerow([new_k, new_v])
+            with open(data_file, 'a', newline='') as csvfile:
+                fieldnames = ['game_id', 'game_details']
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                for game_id, game_details in self.dict.items():
+                    writer.writerow({'game_id': game_id, 'game_details': game_details})
 
     def add_game(self, game_id, game_details):
         self.dict[game_id] = game_details
@@ -236,22 +242,23 @@ class Collection:
 
 
 
-tichu = Game("Tichu")
-tichu.ask_details()
-tichu.set_single_detail("topic", "Science Fiction")
+# tichu = Game("Tichu")
+# tichu.ask_details()
+# tichu.set_single_detail("topic", "Science Fiction")
 
-uno = Game("Uno")
-uno.ask_details()
-uno.set_single_detail("topic", "Fantasy")
+# uno = Game("Uno")
+# uno.ask_details()
+# uno.set_single_detail("topic", "Fantasy")
 
 # print(tichu.game_id)
 # tichu.print_details()
 # print(tichu.get_single_detail("topic"))
 # tichu.print_single_detail("topic")
 
-Sabrina = Collection("Sabrina")
-Sabrina.add_game(tichu.game_id, tichu.details)
-Sabrina.add_game(uno.game_id, uno.details)
-Sabrina.remove_game(tichu.game_id)
-Sabrina.print_colleciton()
-Sabrina.save_collection()
+# Sabrina = Collection("Sabrina")
+# Sabrina.add_game(tichu.game_id, tichu.details)
+# Sabrina.add_game(uno.game_id, uno.details)
+# Sabrina.remove_game(tichu.game_id)
+# Sabrina.print_colleciton()
+# Sabrina.save_collection()
+# Sabrina.load_collection()
