@@ -71,7 +71,7 @@ DETAILS_COLS = ("string",
                 "allowed_values")
 
 # Create data frame with the details a game can have
-DETAIL_DF = pd.DataFrame(np.array([["name of the game", "any", "any"],
+DETAIL_DF = pd.DataFrame(np.array([["name of the game", "string", "any"],
                                    ["minimum number of players", "int", ">=1"],
                                    ["maximum number of players", "int", ">=min_num_players"],
                                    ["minimum duration (minutes)", "int", ">=1"],
@@ -79,13 +79,13 @@ DETAIL_DF = pd.DataFrame(np.array([["name of the game", "any", "any"],
                                    ["minimum age (years)", "int", ">=1"],
                                    [f"complexity level (1 - {NUM_POINTS})", "int_range", "1 - NUM_POINTS"],
                                    [f"difficulty level (1 - {NUM_POINTS})", "int_range", "1 - NUM_POINTS"],
-                                   [f"topic ({', '.join(TOPICS)})", "string", "TOPICS"],
-                                   [f"skill needed ({', '.join(SKILLS)})", "string", "SKILLS"],
-                                   [f"physical part ({', '.join(PHYSICAL_PARTS)})", "string", "PHYSICAL_PARTS"],
-                                   [f"social type ({', '.join(SOCIAL_TYPES)})", "string", "SOCIAL_TYPES"]]),
+                                   [f"topic ({', '.join(TOPICS)})", "string_choice", "TOPICS"],
+                                   [f"skill needed ({', '.join(SKILLS)})", "string_choice", "SKILLS"],
+                                   [f"physical part ({', '.join(PHYSICAL_PARTS)})", "string_choice", "PHYSICAL_PARTS"],
+                                   [f"social type ({', '.join(SOCIAL_TYPES)})", "string_choice", "SOCIAL_TYPES"]]),
                                 columns = DETAILS_COLS,
                                 index = GAME_DETAILS)
-GAME_PROPERTIES = {"any":["any"],
+ALLOWED_VALUES_DICT = {"any":["any"],
                     ">=1":[">=1"],
                    ">=min_num_players":[">=minimum number of players"],
                    ">=min_duration":[">=minimum duration"],
@@ -97,9 +97,9 @@ GAME_PROPERTIES = {"any":["any"],
 
 class Game:
     """
-    _summary_
-
-    ...
+    This is the class for an individual game.
+    It stores all the intrinsic properties of a game (see attributes)
+    It does not store information about the history/events of playing a game
 
     Attributes
     ----------
@@ -142,21 +142,31 @@ class Game:
             _type_: _description_
         """
         for detail in GAME_DETAILS:
-            prompts = chain([f"What is the {DETAIL_DF.loc[detail, 'string']}?"], repeat(f"Sorry, the input must be {', '.join(GAME_PROPERTIES[DETAIL_DF['allowed_values'][detail]])}. Try again:"))
-            if DETAIL_DF.loc[detail, "type"] == "string":
-                replies = map(lambda x: x.lower(), map(input, prompts))  # convert to lowercase for string inputs
+            # Create a iterator of prompts (as strings)
+            # with the first being the initial prompt for the detail
+            # and possibly infinite requests for correcting the input
+            prompts = chain([f"What is the {DETAIL_DF.loc[detail, 'string']}? "],
+                            repeat(f"Sorry, the input must be {', '.join(ALLOWED_VALUES_DICT[DETAIL_DF['allowed_values'][detail]])}. Try again: "))
+            # Check the detail type
+            detail_type = DETAIL_DF.loc[detail, "type"]
+            # Convert to lowercase for string_choice inputs
+            if detail_type == "string_choice":
+                replies = map(lambda x: x.lower(), map(input, prompts))
             else:
+                # Run input function with all the prompts to get the reply
                 replies = map(input, prompts)
-            if DETAIL_DF.loc[detail, "type"] == "int":
-                valid_response = next(filter(lambda replies: (replies.isdigit() and int(replies)>0), replies))
-            elif DETAIL_DF.loc[detail, "type"] == "int_range":
-                valid_response = next(filter(lambda replies: (replies.isdigit() and 1 <= int(replies) <= NUM_POINTS), replies))
-            elif DETAIL_DF.loc[detail, "type"] == "string":
-                valid_response = next(filter(GAME_PROPERTIES[DETAIL_DF["allowed_values"][detail]].__contains__, replies))
-            elif DETAIL_DF.loc[detail, "type"] == "any":
+            # Check if the values are valid for that type
+            if detail_type == "int":
+                valid_response = next(filter(lambda reply: (reply.isdigit() and int(reply)>0), replies))
+            elif detail_type == "int_range":
+                valid_response = next(filter(lambda reply: (reply.isdigit() and 1 <= int(reply) <= NUM_POINTS), replies))
+            elif detail_type == "string_choice":
+                valid_response = next(filter(ALLOWED_VALUES_DICT[DETAIL_DF["allowed_values"][detail]].__contains__, replies))
+            elif detail_type == "any":
                 valid_response = input(f"What is the {DETAIL_DF.loc[detail, 'string']}?")
             self.details[detail] = valid_response
         return self.details
+    
     def get_details(self):
         """
         _summary_
@@ -165,6 +175,7 @@ class Game:
             _type_: _description_
         """
         return self.details
+    
     def print_details(self):
         """
         _summary_
@@ -182,14 +193,17 @@ class Game:
         Returns:
             _type_: _description_
         """
-        if DETAIL_DF.loc[detail, "type"] == "int" and int(value)>0:
+        detail_type = DETAIL_DF.loc[detail, "type"]
+        if detail_type == "int" and int(value)>0:
             self.details[detail] = value
-        elif DETAIL_DF.loc[detail, "type"] == "int_range" and value.isdigit() and 1 <= int(value) <= NUM_POINTS:
+        elif detail_type == "int_range" and value.isdigit() and 1 <= int(value) <= NUM_POINTS:
             self.details[detail] = value
-        elif DETAIL_DF.loc[detail, "type"] == "string" and value.lower() in GAME_PROPERTIES[DETAIL_DF["allowed_values"][detail]]:
+        elif detail_type == "string_choice" and value.lower() in ALLOWED_VALUES_DICT[DETAIL_DF["allowed_values"][detail]]:
             self.details[detail] = value.lower()
-        elif DETAIL_DF.loc[detail, "type"] == "any":
+        elif detail_type == "any":
             self.details[detail] = value
+        else: raise ValueError("""There was something wrong with the value.
+                               Nothing was changed. Try again.""")
 
     def get_single_detail(self, detail):
         """
