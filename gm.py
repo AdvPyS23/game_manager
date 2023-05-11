@@ -19,21 +19,10 @@ def main():
 
     input(WELCOME_SCREEN)
 
-    command_screen =f'''
-    Your collection contains the following games:
-    {library.get_string()}
-    Choose your options by typing one of the following commands into the console:
-
-    - Add a new game:               "new"
-    - See details of a game:        "game_id"
-    - Change a detail of a game:    "change"
-    - Remove a game:                "del"
-    '''
-
-    command_input = input(command_screen)
+    command_input = input(command_screen(library))
     choose_action(command_input, library)
     while command_input != "exit":
-        command_input = input(command_input)
+        command_input = input(command_screen(library))
         library = choose_action(command_input, library)
 
 
@@ -59,6 +48,44 @@ def choose_action(command, lib):
             # input("Press Enter to continue...")
     return lib
 
+WELCOME_SCREEN = '''
+                            Hi, welcome to 
+
+##############################################################################
+                            
+  __ _  __ _ _ __ ___   ___ _ __ ___   __ _ _ __   __ _  __ _  ___ _ __ 
+ / _` |/ _` | '_ ` _ \ / _ \ '_ ` _ \ / _` | '_ \ / _` |/ _` |/ _ \ '__|
+| (_| | (_| | | | | | |  __/ | | | | | (_| | | | | (_| | (_| |  __/ |   
+ \__, |\__,_|_| |_| |_|\___|_| |_| |_|\__,_|_| |_|\__,_|\__, |\___|_|   
+  __/ |                                                  __/ |          
+ |___/                                                  |___/           
+
+##############################################################################
+
+                        Press enter to continue 
+
+'''
+
+def command_screen(lib):
+    command_screen =f'''
+Your collection contains the following games:
+{lib.get_string()}
+Choose your options by typing one of the following commands into the console:
+
+- Add a new game:               "new"
+- See details of a game:        "game_id"
+- Change a detail of a game:    "change"
+- Remove a game:                "del"
+'''
+    return command_screen
+
+main()
+
+
+
+
+
+
 # tichu = Game("Tichu")
 # tichu.ask_details()
 # tichu.set_single_detail("topic", "SCIENCE fiction")
@@ -79,23 +106,3 @@ def choose_action(command, lib):
 # Sabrina.print_collection()
 # Sabrina.save_collection()
 # Sabrina.load_collection()
-
-WELCOME_SCREEN = '''
-                            Hi, welcome to 
-
-##############################################################################
-                            
-  __ _  __ _ _ __ ___   ___ _ __ ___   __ _ _ __   __ _  __ _  ___ _ __ 
- / _` |/ _` | '_ ` _ \ / _ \ '_ ` _ \ / _` | '_ \ / _` |/ _` |/ _ \ '__|
-| (_| | (_| | | | | | |  __/ | | | | | (_| | | | | (_| | (_| |  __/ |   
- \__, |\__,_|_| |_| |_|\___|_| |_| |_|\__,_|_| |_|\__,_|\__, |\___|_|   
-  __/ |                                                  __/ |          
- |___/                                                  |___/           
-
-##############################################################################
-
-                        Press enter to continue 
-
-'''
-
-main()
