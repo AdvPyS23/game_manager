@@ -135,60 +135,8 @@ class Game:
 
     def __str__(self):
         return f"Game: {self.game_name} (ID: {self.game_id})"
-
-    def ask_details(self):
-        """
-        _summary_
-
-        Returns:
-            _type_: _description_
-        """
-        for detail in GAME_DETAILS:
-            # Create a iterator of prompts (as strings)
-            # with the first being the initial prompt for the detail
-            # and possibly infinite requests for correcting the input
-            prompts = chain([f"What is the {DETAIL_DF.loc[detail, 'string']}? "],
-                            repeat(f"Sorry, the input must be {', '.join(ALLOWED_VALUES_DICT[DETAIL_DF['allowed_values'][detail]])}. Try again: "))
-            # Check the detail type
-            detail_type = DETAIL_DF.loc[detail, "type"]
-            # Convert to lowercase for string_choice inputs
-            if detail_type == "string_choice":
-                replies = map(lambda x: x.lower(), map(input, prompts))
-            else:
-                # Run input function with all the prompts to get the reply
-                replies = map(input, prompts)
-            # Check if the values are valid for that type
-            if detail_type == "int":
-                valid_response = next(filter(lambda reply: (reply.isdigit() and int(reply)>0), replies))
-            elif detail_type == "int_range":
-                valid_response = next(filter(lambda reply: (reply.isdigit() and 1 <= int(reply) <= NUM_POINTS), replies))
-            elif detail_type == "string_choice":
-                valid_response = next(filter(ALLOWED_VALUES_DICT[DETAIL_DF["allowed_values"][detail]].__contains__, replies))
-            elif detail_type == "string":
-                valid_response = input(f"What is the {DETAIL_DF.loc[detail, 'string']}? ")
-            self.details[detail] = valid_response
-        return self.details
     
-    def get_details(self):
-        """
-        _summary_
-
-        Returns:
-            _type_: _description_
-        """
-        return self.details
-    
-    def print_details(self):
-        """
-        _summary_
-
-        Returns:
-            _type_: _description_
-        """
-        for detail in self.details:
-            print(f"The {DETAIL_DF.loc[detail, 'string']} of {self.game_name} is {self.details[detail]}")
-
-    def set_single_detail(self, detail, value):
+    def set_detail(self, detail, value):
         """
         _summary_
 
@@ -207,7 +155,51 @@ class Game:
         else: raise ValueError("""There was something wrong with the value.
                                Nothing was changed. Try again.""")
 
-    def get_single_detail(self, detail):
+    def ask_detail(self, detail):
+        """
+        _summary_
+
+        Returns:
+            _type_: _description_
+        """
+        # Create an iterator of prompts (as strings)
+        # with the first being the initial prompt for the detail
+        # and possibly infinite requests for correcting the input
+        prompts = chain([f"What is the {DETAIL_DF.loc[detail, 'string']}? "],
+                        repeat(f"Sorry, the input must be {', '.join(ALLOWED_VALUES_DICT[DETAIL_DF['allowed_values'][detail]])}. Try again: "))
+        # Check the detail type
+        detail_type = DETAIL_DF.loc[detail, "type"]
+        # Convert to lowercase for string_choice inputs
+        if detail_type == "string_choice":
+            replies = map(lambda x: x.lower(), map(input, prompts))
+        else:
+            # Run input function with all the prompts to get the reply
+            replies = map(input, prompts)
+        # Check if the values are valid for that type
+        if detail_type == "int":
+            valid_response = next(filter(lambda reply: (reply.isdigit() and int(reply)>0), replies))
+        elif detail_type == "int_range":
+            valid_response = next(filter(lambda reply: (reply.isdigit() and 1 <= int(reply) <= NUM_POINTS), replies))
+        elif detail_type == "string_choice":
+            valid_response = next(filter(ALLOWED_VALUES_DICT[DETAIL_DF["allowed_values"][detail]].__contains__, replies))
+        elif detail_type == "string":
+            valid_response = input(f"What is the {DETAIL_DF.loc[detail, 'string']}? ")
+        
+        self.set_detail(detail, valid_response)
+        return self.details
+
+    def ask_all_details(self):
+        """
+        _summary_
+
+        Returns:
+            _type_: _description_
+        """
+        for detail in GAME_DETAILS:
+            self.ask_detail(detail)
+        return self.details
+
+    def get_detail(self, detail):
         """
         _summary_
 
@@ -216,7 +208,16 @@ class Game:
         """
         return self.details[detail]
     
-    def print_single_detail(self, detail):
+    def get_all_details(self):
+        """
+        _summary_
+
+        Returns:
+            _type_: _description_
+        """
+        return self.details
+    
+    def print_detail(self, detail):
         """
         _summary_
 
@@ -224,6 +225,16 @@ class Game:
             _type_: _description_
         """
         print(f"The {DETAIL_DF.loc[detail, 'string']} of {self.game_name} is {self.details[detail]}")
+        
+    def print_all_details(self):
+        """
+        _summary_
+
+        Returns:
+            _type_: _description_
+        """
+        for detail in self.details:
+            print(f"The {DETAIL_DF.loc[detail, 'string']} of {self.game_name} is {self.details[detail]}")
 
 
 class Collection:
