@@ -18,6 +18,6 @@ Users can personalise the program not only by creating their own collection of g
 
 ## Getting Started
 
-- Make sure that your system meets all [requirements](./requirements.txt)
-- Download the [gm.py](./gm.py) file and save it to an empty folder
-- Run the gm.py file with Python 3 and follow the on-screen instructions
+- Make sure that your system meets all [requirements](./requirements.md)
+- Download all the files listed here and save them into an empty folder
+- Run the [game_collection](./game_collection.py) file with Python 3 and follow the on-screen instructions

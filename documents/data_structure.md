@@ -1,6 +1,6 @@
 # Game Manager - Data Structure
 
-## Games (class, stored in library df saved in file *Collection*.gmlib)
+## Games (class, stored in collection df saved in file *Collection*.gmlib)
 
 Variable        | Type      | Unit/Entry
 ----------------|-----------|-----------
