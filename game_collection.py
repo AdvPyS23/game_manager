@@ -132,6 +132,7 @@ class Game:
         self.game_id = f"game_{datetime.now():%Y%m%d%H%M%S%f}"
         self.game_name = name
         self.details = {detail: "NA" for detail in GAME_DETAILS}
+
     def __str__(self):
         return f"Game: {self.game_name} (ID: {self.game_id})"
 
@@ -163,8 +164,8 @@ class Game:
                 valid_response = next(filter(lambda reply: (reply.isdigit() and 1 <= int(reply) <= NUM_POINTS), replies))
             elif detail_type == "string_choice":
                 valid_response = next(filter(ALLOWED_VALUES_DICT[DETAIL_DF["allowed_values"][detail]].__contains__, replies))
-            elif detail_type == "any":
-                valid_response = input(f"What is the {DETAIL_DF.loc[detail, 'string']}?")
+            elif detail_type == "string":
+                valid_response = input(f"What is the {DETAIL_DF.loc[detail, 'string']}? ")
             self.details[detail] = valid_response
         return self.details
     
@@ -214,6 +215,7 @@ class Game:
             _type_: _description_
         """
         return self.details[detail]
+    
     def print_single_detail(self, detail):
         """
         _summary_
@@ -223,6 +225,7 @@ class Game:
         """
         print(f"The {DETAIL_DF.loc[detail, 'string']} of {self.game_name} is {self.details[detail]}")
 
+
 class Collection:
     """
     _summary_
@@ -231,20 +234,20 @@ class Collection:
 
     Attributes
     ----------
-    col_id : _type_
+    id : _type_
         _summary_
-    col_name : _type_
+    name : _type_
         _summary_
     list : _type_
         _summary_
 
     Methods
     -------
-    load_collection(self):
+    load_file(self):
         _summary_
-    print_colleciton(self):
+    print(self):
         _summary_
-    save_collection(self):
+    save(self):
         _summary_
     add_game(self, game_id, game_details):
         _summary_
@@ -253,29 +256,32 @@ class Collection:
     """
 
     def __init__(self, name):
-        self.col_id = f"col_{datetime.now():%Y%m%d%H%M%S%f}"
-        self.col_name = name
+        self.id = f"col_{datetime.now():%Y%m%d%H%M%S%f}"
+        self.name = name
+        if self.name == "library": self.id = "library"
         self.dict = {}
-    def __str__(self):
-        return f"Collection: {self.col_name} (ID: {self.col_id})"
+        self.games_dict = {}
 
-    def load_collection(self):
+    def __str__(self):
+        return f"Collection: {self.name} (ID: {self.id})"
+
+    def load_file(self, id):
         """
         _summary_
 
         Returns:
             _type_: _description_
         """
-        data_file = "./collection.gmlib"
+        data_file = f"./{id}.gmcol"
         if os.path.isfile(data_file):
             with open(data_file, newline="") as csvfile:
                 reader = csv.DictReader(csvfile)
                 for row in reader:
                     self.dict = {"game_id":row["game_id"], "game_detail":row["game_details"]}
         else:
-            print("There is no collection available.")
+            print(f"There is no collection with the id {id} available.")
 
-    def print_colleciton(self):
+    def print(self):
         """
         _summary_
 
@@ -284,29 +290,27 @@ class Collection:
         """
         for game_id, game_details in self.dict.items():
             print(game_id, game_details)
+    
+    def get_string(self):
+        out = ""
+        for game_id, game_details in self.dict.items():
+            out += str(game_id) + ": " + str(game_details) + "\n"
+        return out
 
-    def save_collection(self):
+    def save(self):
         """
         _summary_
 
         Returns:
             _type_: _description_
         """
-        data_file = "./collection.gmlib"
-        if not os.path.isfile(data_file):
-            with open(data_file, "a", newline="") as csvfile:
-                fieldnames = ["game_id", "game_details"]
-                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-                writer.writeheader()
-                for game_id, game_details in self.dict.items():
-                    writer.writerow({"game_id": game_id, "game_details": game_details})
-        else:
-            with open(data_file, "a", newline="") as csvfile:
-                fieldnames = ["game_id", "game_details"]
-                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-                writer.writeheader()
-                for game_id, game_details in self.dict.items():
-                    writer.writerow({"game_id": game_id, "game_details": game_details})
+        data_file = f"./{self.id}.gmcol"
+        with open(data_file, "a", newline="") as csvfile:
+            fieldnames = ["game_id", "game_details"]
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+            writer.writeheader()
+            for game_id, game_details in self.dict.items():
+                writer.writerow({"game_id": game_id, "game_details": game_details})
 
     def add_game(self, game_id, game_details):
         """
@@ -317,6 +321,17 @@ class Collection:
         """
         self.dict[game_id] = game_details
         return self.dict
+    
+    def new_game(self):
+        """
+        _summary_
+
+        Returns:
+            _type_: _description_
+        """
+        game_id = f"game_{datetime.now():%Y%m%d%H%M%S%f}"
+        self.dict[game_id] = "Here should come the game details"
+# ADJUST THIS ACCORDING TO CHOSEN DATA STRUCTURE !!!
 
     def remove_game(self, game_id):
         """
@@ -327,3 +342,6 @@ class Collection:
         """
         del self.dict[game_id]
         return self.dict
+    
+    def get_game_ids(self):
+        return self.dict.keys()
