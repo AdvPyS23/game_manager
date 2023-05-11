@@ -1,5 +1,6 @@
 """
-This is the main script to run the game manager.
+This is a module containing the classes game and collection of the game manager.
+It is required to run the tool.
 
 Classes:
     Game
@@ -326,30 +327,3 @@ class Collection:
         """
         del self.dict[game_id]
         return self.dict
-
-
-
-
-
-
-
-# tichu = Game("Tichu")
-# tichu.ask_details()
-# tichu.set_single_detail("topic", "SCIENCE fiction")
-
-# uno = Game("Uno")
-# uno.ask_details()
-# uno.set_single_detail("topic", "fantasy")
-
-# print(tichu.game_id)
-# tichu.print_details()
-# print(tichu.get_single_detail("topic"))
-# tichu.print_single_detail("topic")
-
-# Sabrina = Collection("Sabrina")
-# Sabrina.add_game(tichu.game_id, tichu.details)
-# Sabrina.add_game(uno.game_id, uno.details)
-# Sabrina.remove_game(tichu.game_id)
-# Sabrina.print_colleciton()
-# Sabrina.save_collection()
-# Sabrina.load_collection()
