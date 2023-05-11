@@ -29,16 +29,15 @@ def main():
 def choose_action(command, lib):
     if command == "new":
         lib.new_game()
+    elif command == "del":
+        game = input("Please enter the id of the game to delete. ")
+        lib.remove_game(game)
     elif command == "change":
         game = input("Please enter the id of the game to change. ")
 # TEST VALID INPUT HERE!!!
         detail = input("Please enter the detail of the game to change. ")
 # TEST VALID INPUT HERE!!!
-        game.set_single_detail(detail, input("What value?"))
-# OPTIMISE INPUT! (THERE IS NO METHOD ASK_SINGLE_DETAIL YET...)
-    elif command == "del":
-        game = input("Please enter the id of the game to delete. ")
-        lib.remove_game(game)
+        game.ask_detail(detail, input("What value?"))
     else:
         if command in lib.get_game_ids():
             game = command
@@ -73,9 +72,9 @@ Your collection contains the following games:
 Choose your options by typing one of the following commands into the console:
 
 - Add a new game:               "new"
+- Remove a game:                "del"
 - See details of a game:        "game_id"
 - Change a detail of a game:    "change"
-- Remove a game:                "del"
 '''
     return command_screen
 
