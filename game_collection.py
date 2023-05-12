@@ -155,6 +155,10 @@ class Game:
         else: raise ValueError("""There was something wrong with the value.
                                Nothing was changed. Try again.""")
 
+    def set_all_details(self, details_df):
+        for key, val in details_df:
+            self.set_detail(key, val)
+
     def ask_detail(self, detail):
         """
         _summary_
