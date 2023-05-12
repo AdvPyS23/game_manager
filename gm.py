@@ -39,14 +39,14 @@ def choose_action(command, lib):
     elif command == "del":
         game = input("Please enter the id of the game to delete. ")
         lib.remove_game(game)
-    elif command == "change":
+    elif command == "mod":
         game = input("Please enter the id of the game to change. ")
 # TEST VALID INPUT HERE!!!
         detail = input("Please enter the detail of the game to change. ")
 # TEST VALID INPUT HERE!!!
         game.ask_detail(detail, input("What value?"))
-    elif command in lib.get_game_ids():
-        game = command
+    elif command == "see":
+        game = input("Please enter the id of the game to see. ")
         print("Here should come the info about the game")
     elif command != "exit":
         print("This was not a valid command.")
@@ -56,18 +56,18 @@ def choose_action(command, lib):
 WELCOME_SCREEN = '''
                             Hi, welcome to 
 
-##############################################################################
+###############################################################################
                             
-    __ _  __ _ _ __ ___   ___ _ __ ___   __ _ _ __   __ _  __ _  ___ _ __ 
-   / _` |/ _` | '_ ` _ \ / _ \ '_ ` _ \ / _` | '_ \ / _` |/ _` |/ _ \ '__|
-  | (_| | (_| | | | | | |  __/ | | | | | (_| | | | | (_| | (_| |  __/ |   
-   \__, |\__,_|_| |_| |_|\___|_| |_| |_|\__,_|_| |_|\__,_|\__, |\___|_|   
-    __/ |                                                  __/ |          
-   |___/                                                  |___/           
+    __ _  __ _ _ __ ___   ___    _ __ ___   __ _ _ __   __ _  __ _  ___ _ __ 
+   / _` |/ _` | '_ ` _ \ / _ \  / '_ ` _ \ / _` | '_ \ / _` |/ _` |/ _ \ '__|
+  | (_| | (_| | | | | | |  __/  | | | | | | (_| | | | | (_| | (_| |  __/ |   
+   \__, |\__,_|_| |_| |_|\___|  |_| |_| |_|\__,_|_| |_|\__,_|\__, |\___|_|   
+    __/ |                                                     __/ |          
+   |___/                                                     |___/           
 
-##############################################################################
+###############################################################################
 
-                        Press enter to continue 
+                        Press enter to continue ... 
 
 '''
 
@@ -79,12 +79,12 @@ def command_screen(col):
     command_screen = f'''
 Your collection contains the following games:
 {col.get_string()}
-Choose your options by typing one of the following commands into the console:
+Choose your option by typing one of the following commands into the console:
 
 - Add a new game:               "new"
 - Remove a game:                "del"
-- See details of a game:        "game_id"
-- Change a detail of a game:    "change"
+- See details of a game:        "see"
+- Modify a detail of a game:    "mod"
 '''
     return command_screen
 
