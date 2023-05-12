@@ -39,3 +39,10 @@ Second deliverable; Classes; Refactoring        | Deadline: May 11
 Third deliverable; Unit tests; Issues           | Deadline: May 18
 Virtual Environment                             | Deadline: May 25
 Presentation (in person and in class)           | Deadline: June 1
+
+
+## Tasks
+- [ ] Define link between collection and game; how to store games?
+- [ ] Optimise ask_detail; e.g. multiple inputs for "choice" type
+- [ ] Work on user interface in gm.py
+- [ ] Add history

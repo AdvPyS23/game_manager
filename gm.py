@@ -1,109 +1,117 @@
+"""
+This is the file to run the game manager.
+It requires the modules game_collection and history to run.
+"""
+
+import os
 import numpy as np
 import pandas as pd
-from datetime import datetime
+from game_collection import Game, Collection
+from history import History
 
-def initialise_gm():
-    global NUM_POINTS
-    global TOPICS
-    global SKILLS
-    global PHYSICAL_PARTS
-    global SOCIAL_TYPES
-    global GAME_DETAILS
-    global DETAIL_DF
-    # Define the number of points to give for details such as complexity and difficulty
-    NUM_POINTS =  10
-    # Define the values to choose from for details such as topics, skills etc.
-    TOPICS = ("Fantasy", "Science Fiction", "Real World", "Abstract", "Adaptation", "other")
-    SKILLS = ("Logics", "Dexterity", "Intuition", "Creativity", "Knowledge", "Strategy", "Negotiation", "Luck", "Roleplay")
-    PHYSICAL_PARTS = ("board", "cards", "dice", "supplementals", "other")    
-    SOCIAL_TYPES = ("cooperative", "one_v_all", "teams", "all_v_all", "other")
-    # Define all the details a game has information about
-    GAME_DETAILS = ("min_num_players",
-                    "max_num_players",
-                    "min_duration",
-                    "max_duration",
-                    "min_age",
-                    "complexity",
-                    "difficulty",
-                    "topic",
-                    "skills",
-                    "physical_parts",
-                    "social_type")
-    DETAIL_COLS = ("string", "type", "allowed_values")
-    DETAIL_DF = pd.DataFrame(np.array([["minimum number of players", "int", ""],
-                                          ["maximum number of players", "int", ""],
-                                          ["minimum duration (minutes)", "int", ""],
-                                          ["maximum duration (minutes)", "int", ""],
-                                          ["minimum age (years)", "int", ""],
-                                          [f"complexity level (1 - {NUM_POINTS})", "int_range", ""], # tuple(n+1 for n in range(NUM_POINTS))],
-                                          [f"difficulty level (1 - {NUM_POINTS})", "int_range", ""],  # tuple(n+1 for n in range(NUM_POINTS))],
-                                          [f"topic ({', '.join(TOPICS)})", "choice", ""], # TOPICS],
-                                          [f"skills needed ({', '.join(SKILLS)})", "choice", ""], # SKILLS],
-                                          [f"physical parts ({', '.join(PHYSICAL_PARTS)})", "choice", ""], # PHYSICAL_PARTS],
-                                          [f"social type ({', '.join(SOCIAL_TYPES)})", "choice", ""]]), # SOCIAL_TYPES]]))
-                                columns = DETAIL_COLS,
-                                index = GAME_DETAILS)
-    # Consolidate and return in a dictionary
-    GAME_PROPERTIES = {"NUM_POINTS": NUM_POINTS,
-                       "TOPICS": TOPICS,
-                       "SKILLS": SKILLS,
-                       "PHYSICAL_PARTS": PHYSICAL_PARTS,
-                       "SOCIAL_TYPES": SOCIAL_TYPES,
-                       "GAME_DETAILS": GAME_DETAILS,
-                       "DETAIL_DF": DETAIL_DF}
-    return GAME_PROPERTIES
+def main():
+    # Change working directory to the path of the script
+    dir_path = os.path.dirname(os.path.abspath(__file__))
+    os.chdir(dir_path)
+    # Create the object library (the main collection)
+    library = Collection("library")
+    # If there is already a saved file for the library, load it
+    if os.path.isfile("./library.gmcol"):
+        library.load_file("library")
 
-class game:
-    def __init__(self, name):
-        self.id = "game_" + "{:%Y%m%d%H%M%S%f}".format(datetime.now())
-        self.name = name
-        self.details = {detail: "NA" for detail in GAME_DETAILS}
-    def __str__(self):
-        return f"Game: {self.name} (ID: {self.id})"
-    
-    def ask_details(self):
-        for detail in GAME_DETAILS:
-            self.details[detail] = input(f"What is the {DETAIL_DF.loc[detail, "string"]}? ")
-    def get_details(self):
-        return self.details
-    def print_details(self):
-        for detail in self.details:
-            print(f"The {DETAIL_DF.loc[detail, 'string']} of {self.name} is {self.details[detail]}")
-    
-    def set_single_detail(self, detail, value):
-        self.details[detail] = value
-    def get_single_detail(self, detail):
-        return self.details[detail]
-    def print_single_detail(self, detail):
-        print(f"The {DETAIL_DF.loc[detail, 'string']} of {self.name} is {self.details[detail]}")
+    # If not, create one (empty)
+    else: library.save()
 
-class collection:
-    def __init__(self, name):
-        self.id = "col_" + "{:%Y%m%d%H%M%S%f}".format(datetime.now())
-        self.name = name
-        self.list = []
-    def __str__(self):
-        return f"Collection: {self.name} (ID: {self.id})"
-    
-        
-class history:
-    def __init__(self, name):
-        self.id = "history_" + "{:%Y%m%d%H%M%S%f}".format(datetime.now())
-        self.name = name
-    def __str__(self):
-        return f"Game:{self.name} (ID: {self.id})"
-    
-    
-# gm = initialise_gm""
-# print(gm["NUM_POINTS"])
+    input(WELCOME_SCREEN)
 
-initialise_gm()
-# print(DETAIL_DF)
-tichu = game("Tichu")
-print(tichu)
+    command_input = input(command_screen(library))
+    choose_action(command_input, library)
+    while command_input != "exit":
+        command_input = input(command_screen(library))
+        library = choose_action(command_input, library)
+    
+    library.save()
+
+
+def choose_action(command, lib):
+    if command == "new":
+        lib.new_game()
+    elif command == "del":
+        game = input("Please enter the id of the game to delete. ")
+        lib.remove_game(game)
+    elif command == "mod":
+        game = input("Please enter the id of the game to change. ")
+# TEST VALID INPUT HERE!!!
+        detail = input("Please enter the detail of the game to change. ")
+# TEST VALID INPUT HERE!!!
+        game.ask_detail(detail, input("What value?"))
+    elif command == "see":
+        game = input("Please enter the id of the game to see. ")
+        print("Here should come the info about the game")
+    elif command != "exit":
+        print("This was not a valid command.")
+        input("Press Enter to continue...")
+    return lib
+
+WELCOME_SCREEN = '''
+                            Hi, welcome to 
+
+###############################################################################
+                            
+    __ _  __ _ _ __ ___   ___    _ __ ___   __ _ _ __   __ _  __ _  ___ _ __ 
+   / _` |/ _` | '_ ` _ \ / _ \  / '_ ` _ \ / _` | '_ \ / _` |/ _` |/ _ \ '__|
+  | (_| | (_| | | | | | |  __/  | | | | | | (_| | | | | (_| | (_| |  __/ |   
+   \__, |\__,_|_| |_| |_|\___|  |_| |_| |_|\__,_|_| |_|\__,_|\__, |\___|_|   
+    __/ |                                                     __/ |          
+   |___/                                                     |___/           
+
+###############################################################################
+
+                        Press enter to continue ... 
+
+'''
+
+def command_screen(col):
+    '''
+    Defines and returns the command screen depending on the loaded collection
+    '''
+
+    command_screen = f'''
+Your collection contains the following games:
+{col.get_string()}
+Choose your option by typing one of the following commands into the console:
+
+- Add a new game:               "new"
+- Remove a game:                "del"
+- See details of a game:        "see"
+- Modify a detail of a game:    "mod"
+'''
+    return command_screen
+
+main()
+
+
+
+
+
+
+# tichu = Game("Tichu")
 # tichu.ask_details()
-print(tichu.get_details())
-tichu.print_details()
-tichu.set_single_detail("topic", "SciFi")
-print(tichu.get_single_detail("topic"))
-tichu.print_single_detail("topic")
+# tichu.set_single_detail("topic", "SCIENCE fiction")
+
+# uno = Game("Uno")
+# uno.ask_details()
+# uno.set_single_detail("topic", "fantasy")
+
+# print(tichu.game_id)
+# tichu.print_details()
+# print(tichu.get_single_detail("topic"))
+# tichu.print_single_detail("topic")
+
+# Sabrina = Collection("Sabrina")
+# Sabrina.add_game(tichu.game_id, tichu.details)
+# Sabrina.add_game(uno.game_id, uno.details)
+# Sabrina.remove_game(tichu.game_id)
+# Sabrina.print_collection()
+# Sabrina.save_collection()
+# Sabrina.load_collection()

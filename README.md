@@ -1,4 +1,4 @@
-# Game Manager
+# Game manager
 
 This project is part of the course "Advanced Python", University of Bern, Spring Semester 2023.
 
@@ -10,7 +10,7 @@ For details on the implementation such as milestones, please also refer to the [
 
 ## Description
 
-Game Manager is a little python tool to organise your social games. It also helps you find a good fit for your game event and gives suggestions for the next purchase.
+Game manager is a little python tool to organise your social games. It also helps you find a good fit for your game event and gives suggestions for the next purchase.
 
 The tool addresses all fans of board and card games and many more. It will especially help people that own a variety of games to keep an overview and make easier choices for any opportunity.
 
@@ -18,6 +18,6 @@ Users can personalise the program not only by creating their own collection of g
 
 ## Getting Started
 
-- Make sure that your system meets all [requirements](./requirements.txt)
-- Download the [gm.py](./gm.py) file and save it to an empty folder
-- Run the gm.py file with Python 3 and follow the on-screen instructions
+- Make sure that your system meets all [requirements](./requirements.md)
+- Download all the files listed here and save them into an empty folder
+- Run the [game_collection](./game_collection.py) file with Python 3 and follow the on-screen instructions
