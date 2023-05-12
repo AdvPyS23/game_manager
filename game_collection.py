@@ -22,12 +22,12 @@ import pandas as pd
 # Define the number of points to give for details such as complexity and difficulty
 NUM_POINTS =  10
 # Define the values to choose from for details such as topics, skills etc.
-TOPICS = ("fantasy",
-          "science fiction",
-          "real world",
-          "abstract",
-          "adaptation",
-          "other")
+TOPICS = {"1": "fantasy",
+          "2": "science fiction",
+          "3": "real world",
+          "4": "abstract",
+          "5": "adaptation",
+          "0": "other"}
 
 SKILLS = ("logics",
           "dexterity",
@@ -80,7 +80,7 @@ DETAIL_DF = pd.DataFrame(np.array([["name of the game", "string", "any"],
                                    ["minimum age (years)", "int", ">=1"],
                                    [f"complexity level (1 - {NUM_POINTS})", "int_range", "1 - NUM_POINTS"],
                                    [f"difficulty level (1 - {NUM_POINTS})", "int_range", "1 - NUM_POINTS"],
-                                   [f"topic ({', '.join(TOPICS)})", "string_choice", "TOPICS"],
+                                   [f"topic ({TOPICS})", "string_choice", "TOPICS"],
                                    [f"skill needed ({', '.join(SKILLS)})", "string_choice", "SKILLS"],
                                    [f"physical part ({', '.join(PHYSICAL_PARTS)})", "string_choice", "PHYSICAL_PARTS"],
                                    [f"social type ({', '.join(SOCIAL_TYPES)})", "string_choice", "SOCIAL_TYPES"]]),
@@ -91,7 +91,8 @@ ALLOWED_VALUES_DICT = {"any":["any"],
                    ">=min_num_players":[">=minimum number of players"],
                    ">=min_duration":[">=minimum duration"],
                    "1 - NUM_POINTS":[f"1 - {NUM_POINTS}"],
-                   "TOPICS":TOPICS,
+                #    "TOPICS":TOPICS.keys(),
+                   "TOPICS":TOPICS.values(),
                    "SKILLS":SKILLS,
                    "PHYSICAL_PARTS":PHYSICAL_PARTS,
                    "SOCIAL_TYPES":SOCIAL_TYPES}
@@ -136,6 +137,38 @@ class Game:
     def __str__(self):
         return f"Game: {self.game_name} (ID: {self.game_id})"
     
+    def ask_topic_test(self):
+        # Trying this feature just for topic as a test...
+        detail = "topic"
+        # get the type, string and allowed values for this detail
+        detail_type = DETAIL_DF.loc[detail, "type"]
+        detail_string = DETAIL_DF.loc[detail, 'string']
+        allowed_values = ALLOWED_VALUES_DICT[DETAIL_DF['allowed_values'][detail]]
+
+        # prompts = chain([f"What is the {DETAIL_DF.loc[detail, 'string']}? Enter any combination of numbers. "],
+        #                 repeat(f"Sorry, the input must be any combination of {', '.join(ALLOWED_VALUES_DICT[DETAIL_DF['allowed_values'][detail]])}. Try again: "))
+
+        # DOING THIS THE OLD FASHIONED WAY TO TRY OUT FUNCTIONALITY, JUST BECAUSE MY BRAIN CAN'T HANDLE CHAIN, REPEAT ETC. RIGHT NOW
+        if detail_type == "string_choice":
+            reply = input(f"What is the {detail_string}?\nEnter any combination of numbers (without separator). ")
+            # Take apart the numbers (still as strings), remove duplicates and sort
+            nums = sorted(set(reply))
+            # Test if all numbers in the allowed vlaues
+            is_valid = np.all([num in allowed_values for num in nums])
+            # Repeat if not...
+            while not is_valid:
+                reply = input(f"Sorry, the input must be {detail_string}.\nEnter any combination of numbers (without separator). Try again: ")
+                nums = sorted(set(reply))
+                is_valid = np.all([num in allowed_values for num in nums])
+
+        # Join back together all the (single and sorted) numbers into one string
+        valid_response = "".join(nums)
+
+        # Can't use set_detail() yet, because there is a test that doesn't work like that yet...
+        # self.set_detail(detail, valid_response)
+        self.details[detail] = valid_response
+        return self.details
+
     def set_detail(self, detail, value):
         """
         _summary_
@@ -296,22 +329,6 @@ class Collection:
         else:
             print(f"There is no collection with the id {id} available.")
 
-    def print(self):
-        """
-        _summary_
-
-        Returns:
-            _type_: _description_
-        """
-        for game_id, game_details in self.dict.items():
-            print(game_id, game_details)
-    
-    def get_string(self):
-        out = ""
-        for game_id, game_details in self.dict.items():
-            out += str(game_id) + ": " + str(game_details) + "\n"
-        return out
-
     def save(self):
         """
         _summary_
@@ -360,3 +377,25 @@ class Collection:
     
     def get_game_ids(self):
         return self.dict.keys()
+
+    def get_details_string(self):
+        out = ""
+        for game_id, game_details in self.dict.items():
+            out += str(game_id) + ": " + str(game_details) + "\n"
+        return out
+    
+    def print(self):
+        """
+        _summary_
+
+        Returns:
+            _type_: _description_
+        """
+        for game_id, game_details in self.dict.items():
+            print(game_id, game_details)
+    
+
+
+
+
+

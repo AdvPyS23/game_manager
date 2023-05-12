@@ -78,7 +78,7 @@ def command_screen(col):
 
     command_screen = f'''
 Your collection contains the following games:
-{col.get_string()}
+{col.get_details_string()}
 Choose your option by typing one of the following commands into the console:
 
 - Add a new game:               "new"
@@ -96,7 +96,7 @@ main()
 
 
 # tichu = Game("Tichu")
-# tichu.ask_details()
+# tichu.ask_topic_test()
 # tichu.set_single_detail("topic", "SCIENCE fiction")
 
 # uno = Game("Uno")
