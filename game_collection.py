@@ -177,12 +177,28 @@ class Game:
             _type_: _description_
         """
         detail_type = DETAIL_DF.loc[detail, "type"]
-        if detail_type == "int" and int(value)>0:
-            self.details[detail] = value
-        elif detail_type == "int_range" and value.isdigit() and 1 <= int(value) <= NUM_POINTS:
-            self.details[detail] = value
-        elif detail_type == "string_choice" and value.lower() in ALLOWED_VALUES_DICT[DETAIL_DF["allowed_values"][detail]]:
-            self.details[detail] = value.lower()
+        if detail_type == "int":
+            try:
+                assert int(value) > 0
+                self.details[detail] = value
+            except AssertionError:
+                print("The entered value is not sutable for this detail.")
+        
+        elif detail_type == "int_range":
+            try:
+                assert value.isdigit()
+                assert 1 <= int(value) <= NUM_POINTS
+                self.details[detail] = value
+            except AssertionError:
+                print("The entered value is not sutable for this detail.")
+
+        elif detail_type == "string_choice":
+            try:
+                assert value.lower() in ALLOWED_VALUES_DICT[DETAIL_DF["allowed_values"][detail]]
+                self.details[detail] = value.lower()
+            except AssertionError:
+                print("The entered value is not sutable for this detail.")
+
         elif detail_type == "any":
             self.details[detail] = value
         else: raise ValueError("""There was something wrong with the value.
