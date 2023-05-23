@@ -4,6 +4,7 @@ It requires the modules game_collection and history to run.
 """
 
 import os
+from datetime import datetime
 import numpy as np
 import pandas as pd
 import csv
@@ -25,10 +26,8 @@ def main():
             for game in reader:
                 id, name, detail_string = game
                 details = detail_string.split(",")
-                print(name, details)
                 detail_dict = dict(zip(GAME_DETAILS, details))
-                print(detail_dict)
-                library[name] = Game(name, detail_dict)
+                library[name] = Game(id, name, detail_dict)
 
     # Start the user interaction
     input(WELCOME_SCREEN)
@@ -67,8 +66,11 @@ def command_screen(lib):
     '''
     Defines and returns the command screen depending on the loaded collection
     '''
-    games_string = "\n   * ".join(lib.keys())
-    command_screen = f'''
+    games_string = "    * " + "\n    * ".join(lib.keys())
+
+    c_s = f'''
+################################################################################
+    
 Your library contains the following games:
 
 {games_string}
@@ -78,43 +80,43 @@ Choose your option by typing one of the following commands into the console:
 - Add a new game:               "new"
 - See details of a game:        "see"
 - Modify a detail of a game:    "mod"
+- Delete a game from library:   "del"
 
 - Save and quit:                "exit"
 
+################################################################################
+
 '''
-    return command_screen
+    return c_s
 
 def choose_action(command, lib):
     if command == "new":
-        name = input("Please enter the name of the game: ")
-        attempts = 3
-        while name in lib.keys() and attempts > 0:
+        id = f"game_{datetime.now():%Y%m%d%H%M%S%f}"
+        name = input("Please enter the name of the new game: ")
+        while name in lib.keys():
             name = input("There is already a game with this name in the library. Please enter another name: ")
-            attempts -= 1
-        lib[name] = Game(name)
+        lib[name] = Game(id, name)
         lib[name].ask_all_details()
-    # elif command == "del":
-    #     game = input("Please enter the id of the game to delete. ")
-    #     lib.remove_game(game)
+    elif command == "del":
+        name = input("Please enter the name of the game to delete. ")
+        while name not in lib.keys():
+            name = input("There is no game with this name in the library. Please enter a valid name: ")
+        if input(f"Are you sure to delete this game: {name}? Enter 'y' if so: ") == "y":
+            lib.pop(name)
     elif command == "mod":
         name = input("Please enter the name of the game to change. ")
-        attempts = 3
-        while (name not in lib.keys()) and (attempts > 0):
+        while name not in lib.keys():
             name = input("There is no game with this name in the library. Please enter a valid name: ")
-            attempts -= 1
         detail = input("Please enter the detail of the game to change. ")
-        attempts = 3
-        while (detail not in GAME_DETAILS) and (attempts > 0):
+        while detail not in GAME_DETAILS:
             detail = input("There is no such detail. Please enter a valid detail: ")
-            attempts -= 1
         lib[name].ask_detail(detail)
     elif command == "see":
         name = input("Please enter the name of the game to see. ")
-        attempts = 3
-        while (name not in lib.keys()) and (attempts > 0):
+        while name not in lib.keys():
             name = input("There is no game with this name in the library. Please enter a valid name: ")
-            attempts -= 1
-        print(lib[name].get_all_details_str())
+        print("\n" + lib[name].get_all_details_str())
+        input("\nPress enter to continue...")
     elif command != "exit":
         print("This was not a valid command.")
         input("Press Enter to continue...")

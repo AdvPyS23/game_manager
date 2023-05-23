@@ -135,8 +135,8 @@ class Game:
         _summary_
     """
 
-    def __init__(self, name, details = {}):
-        self.id = f"game_{datetime.now():%Y%m%d%H%M%S%f}"
+    def __init__(self, id, name, details = {}):
+        self.id = id
         self.name = name
         # Initiate all details to ""
         self.details = {detail: "" for detail in GAME_DETAILS}
