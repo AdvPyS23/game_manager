@@ -19,6 +19,10 @@ import csv
 import numpy as np
 import pandas as pd
 
+###################################
+### GLOBAL CONSTANTS
+###################################
+
 # Define the number of points to give for details such as complexity and difficulty
 NUM_POINTS =  10
 # Define the values to choose from for details such as topics, skills etc.
@@ -72,22 +76,21 @@ DETAILS_COLS = ("string",
                 "allowed_values")
 
 # Create data frame with the details a game can have
-DETAIL_DF = pd.DataFrame(np.array([["name of the game", "string", "any"],
-                                   ["minimum number of players", "int", ">=1"],
+DETAIL_DF = pd.DataFrame(np.array([["minimum number of players", "int", ">=1"],
                                    ["maximum number of players", "int", ">=min_num_players"],
                                    ["minimum duration (minutes)", "int", ">=1"],
                                    ["maximum duration (minutes)", "int", ">=min_duration"],
                                    ["minimum age (years)", "int", ">=1"],
                                    [f"complexity level (1 - {NUM_POINTS})", "int_range", "1 - NUM_POINTS"],
                                    [f"difficulty level (1 - {NUM_POINTS})", "int_range", "1 - NUM_POINTS"],
-                                   [f"topic ({TOPICS.values()})", "string_choice", "TOPICS"],
-                                   [f"skill needed ({', '.join(SKILLS.values())})", "string_choice", "SKILLS"],
-                                   [f"physical part ({', '.join(PHYSICAL_PARTS.values())})", "string_choice", "PHYSICAL_PARTS"],
-                                   [f"social type ({', '.join(SOCIAL_TYPES.values())})", "string_choice", "SOCIAL_TYPES"]]),
+                                   [f"topic ({TOPICS.values()})", "choice", "TOPICS"],
+                                   [f"skill needed ({', '.join(SKILLS.values())})", "choice", "SKILLS"],
+                                   [f"physical part ({', '.join(PHYSICAL_PARTS.values())})", "choice", "PHYSICAL_PARTS"],
+                                   [f"social type ({', '.join(SOCIAL_TYPES.values())})", "choice", "SOCIAL_TYPES"]]),
                                 columns = DETAILS_COLS,
                                 index = GAME_DETAILS)
-ALLOWED_VALUES_DICT = {"any":["any"],
-                       ">=1":[">=1"],
+
+ALLOWED_VALUES_DICT = {">=1":[">=1"],
                        ">=min_num_players":[">=minimum number of players"],
                        ">=min_duration":[">=minimum duration"],
                        "1 - NUM_POINTS":[f"1 - {NUM_POINTS}"],
@@ -95,6 +98,11 @@ ALLOWED_VALUES_DICT = {"any":["any"],
                        "SKILLS":SKILLS.keys(),
                        "PHYSICAL_PARTS":PHYSICAL_PARTS.keys(),
                        "SOCIAL_TYPES":SOCIAL_TYPES.keys()}
+
+
+###################################
+### CLASS DEFINITIONS
+###################################
 
 class Game:
     """
@@ -128,10 +136,14 @@ class Game:
         _summary_
     """
 
-    def __init__(self, name):
+    def __init__(self, name, details = {}):
         self.id = f"game_{datetime.now():%Y%m%d%H%M%S%f}"
         self.name = name
+        # Initiate all details to "NA"
         self.details = {detail: "NA" for detail in GAME_DETAILS}
+        # If there is a details dictionary given, we assign the given details
+        if details:
+            self.set_multi_details(details)
 
     def __str__(self):
         return f"Game: {self.name} (ID: {self.id})"
@@ -144,71 +156,37 @@ class Game:
             _type_: _description_
         """
         detail_type = DETAIL_DF.loc[detail, "type"]
+        allowed_values = ALLOWED_VALUES_DICT[DETAIL_DF["allowed_values"][detail]]
+        error_message = "The entered value is not suitable for this type of detail ({detail_type}).\nValues must be {allowed_values}"
+        
+        # Test, for the type of detail given, the value entered
         if detail_type == "int":
             try:
                 assert int(value) > 0
-                self.details[detail] = value
             except AssertionError:
-                print("The entered value is not suitable for this detail.")
-        
+                print(error_message)
         elif detail_type == "int_range":
             try:
                 assert value.isdigit()
                 assert 1 <= int(value) <= NUM_POINTS
-                self.details[detail] = value
             except AssertionError:
-                print("The entered value is not sutable for this detail.")
-
-        elif detail_type == "string_choice":
+                print(error_message)
+        elif detail_type == "choice":
             try:
-                assert value.lower() in ALLOWED_VALUES_DICT[DETAIL_DF["allowed_values"][detail]]
-                self.details[detail] = value.lower()
+                value = sort_test_choice(value, allowed_values)
+                assert value
             except AssertionError:
-                print("The entered value is not sutable for this detail.")
-
-        elif detail_type == "any":
-            self.details[detail] = value
-
+                print(error_message)
+        # If it's of no known type, raise a specific error
         else:
-            raise ValueError("""There was something wrong with the value.
+            raise ValueError("""There was something wrong with the detail type.
                                Nothing was changed. Try again.""")
+        # If all tests are passed and no error raised, set the detail to the entered value
+        self.details[detail] = value
 
-    def set_all_details(self, details_df):
-        for key, val in details_df:
+    def set_multi_details(self, details_dict):
+        for key, val in details_dict:
             self.set_detail(key, val)
-
-    def ask_detail_old(self, detail):
-        """
-        _summary_
-
-        Returns:
-            _type_: _description_
-        """
-        # Create an iterator of prompts (as strings)
-        # with the first being the initial prompt for the detail
-        # and possibly infinite requests for correcting the input
-        prompts = chain([f"What is the {DETAIL_DF.loc[detail, 'string']}? "],
-                        repeat(f"Sorry, the input must be {', '.join(ALLOWED_VALUES_DICT[DETAIL_DF['allowed_values'][detail]])}. Try again: "))
-        # Check the detail type
-        detail_type = DETAIL_DF.loc[detail, "type"]
-        # Convert to lowercase for string_choice inputs
-        if detail_type == "string_choice":
-            replies = map(lambda x: x.lower(), map(input, prompts))
-        else:
-            # Run input function with all the prompts to get the reply
-            replies = map(input, prompts)
-        # Check if the values are valid for that type
-        if detail_type == "int":
-            valid_response = next(filter(lambda reply: (reply.isdigit() and int(reply)>0), replies))
-        elif detail_type == "int_range":
-            valid_response = next(filter(lambda reply: (reply.isdigit() and 1 <= int(reply) <= NUM_POINTS), replies))
-        elif detail_type == "string_choice":
-            valid_response = next(filter(ALLOWED_VALUES_DICT[DETAIL_DF["allowed_values"][detail]].__contains__, replies))
-        elif detail_type == "string":
-            valid_response = input(f"What is the {DETAIL_DF.loc[detail, 'string']}? ")
-        
-        self.set_detail(detail, valid_response)
-        return self.details
     
     def ask_detail(self, detail):
         # get the type, string and allowed values for this detail
@@ -216,9 +194,8 @@ class Game:
         detail_string = DETAIL_DF.loc[detail, 'string']
         allowed_values = ALLOWED_VALUES_DICT[DETAIL_DF['allowed_values'][detail]]
 
-        # DOING THIS THE OLD FASHIONED WAY TO TRY OUT FUNCTIONALITY, JUST BECAUSE MY BRAIN CAN'T HANDLE CHAIN, REPEAT ETC. RIGHT NOW
-        if detail_type == "string_choice":
-            string_choice_input(detail_string, allowed_values)
+        if detail_type == "choice":
+            choice_input(detail_string, allowed_values)
 
         else:
             # Create an iterator of prompts (as strings)
@@ -233,12 +210,8 @@ class Game:
                 valid_response = next(filter(lambda reply: (reply.isdigit() and int(reply)>0), replies))
             elif detail_type == "int_range":
                 valid_response = next(filter(lambda reply: (reply.isdigit() and 1 <= int(reply) <= NUM_POINTS), replies))
-            elif detail_type == "string":
-                valid_response = input(f"What is the {detail_string}? ")
 
-        # Can't use set_detail() yet, because there is a test that doesn't work like that yet...
-        # self.set_detail(detail, valid_response)
-        self.details[detail] = valid_response
+        self.set_detail(detail, valid_response)
         return self.details
 
     def ask_all_details(self):
@@ -411,25 +384,25 @@ class Collection:
             print(game_id, game_details)
     
 
+###################################
+### HELPER FUNCTIONS
+###################################
 
-
-def string_choice_input(detail_string, allowed_values):
+def choice_input(detail_string, allowed_values):
     '''
-    Asks the user to input a selection from a detail of type "string_choice"
-    Repeats until a valid input is given
+    Asks the user to input a selection from a detail of type "choice"
+    Repeats until a valid user input value is given
 
     Inputs:
         detail_string:  String of the detail (ideally listing the allowed values)
         allowed_values: List of all allowed values that can be entered by the user (i.e. the KEYs of the ALLOWED_VALUES_DICT)
 
     Returns:
-        valid_response: a string containing the keys of the dictionary belonging to the detail of type "string_choice"
+        valid_response: a string containing the keys of the dictionary belonging to the detail of type "choice"
     '''
+    # DOING THIS THE OLD FASHIONED WAY TO TRY OUT FUNCTIONALITY, JUST BECAUSE MY BRAIN CAN'T HANDLE CHAIN, REPEAT ETC. RIGHT NOW
     reply = input(f"What is the {detail_string}?\nEnter any combination of numbers (without separator). ")
-    # Take apart the numbers (still as strings), remove duplicates and sort
-    nums = sorted(set(reply))
-    # Test if all numbers in the allowed vlaues
-    is_valid = np.all([num in allowed_values for num in nums])
+
     # Repeat if not...
     while not is_valid:
         reply = input(f"Sorry, the input must be {detail_string}.\nEnter any combination of numbers (without separator). Try again: ")
@@ -440,3 +413,22 @@ def string_choice_input(detail_string, allowed_values):
     valid_response = "".join(nums)
     return valid_response
 
+def sort_test_choice(input_string, allowed_values):
+    '''
+    Checks if the digits in the input string are all in the allowed values
+    
+    Inputs:
+        input_string:   String to test (should only contain allowed digits)
+        allowed_values: The values (digits) that are allowed in the input string
+    
+    Returns:
+        IF TEST PASSED: A string containing a the sorted and unique digits of the input string
+        IF TEST FAILS:  False
+
+    '''
+    # Take apart the numbers (still as strings), remove duplicates and sort
+    nums = sorted(set(input_string))
+    # Test if all numbers are in the allowed vlaues
+    is_valid = np.all([num in allowed_values for num in nums])
+    if not is_valid: return False
+    else: return nums
