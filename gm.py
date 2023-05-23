@@ -1,6 +1,6 @@
 """
 This is the file to run the game manager.
-It requires the modules game_collection and history to run.
+It requires the modules game, collection and history to run.
 """
 
 import os
@@ -8,7 +8,8 @@ from datetime import datetime
 import numpy as np
 import pandas as pd
 import csv
-from game_collection import Game, Collection, GAME_DETAILS
+from game import Game, GAME_DETAILS
+from collection import Collection
 from history import History
 
 def main():
