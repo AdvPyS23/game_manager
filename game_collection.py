@@ -29,28 +29,28 @@ TOPICS = {"1": "fantasy",
           "5": "adaptation",
           "0": "other"}
 
-SKILLS = ("logics",
-          "dexterity",
-          "intuition",
-          "creativity",
-          "knowledge",
-          "strategy",
-          "negotiation",
-          "luck",
-          "roleplay",
-          "other")
+SKILLS = {1: "logics",
+          2: "dexterity",
+          3: "intuition",
+          4: "creativity",
+          5: "knowledge",
+          6: "strategy",
+          7: "negotiation",
+          8: "luck",
+          9: "roleplay",
+          0: "other"}
 
-PHYSICAL_PARTS = ("board",
-                  "cards",
-                  "dice",
-                  "supplementals",
-                  "other")
+PHYSICAL_PARTS = {1: "board",
+                  2: "cards",
+                  3: "dice",
+                  4: "supplementals",
+                  0: "other"}
 
-SOCIAL_TYPES = ("cooperative",
-                "one_vs_all",
-                "teams",
-                "all_vs_all",
-                "other")
+SOCIAL_TYPES = {1: "cooperative",
+                2: "one_vs_all",
+                3: "teams",
+                4: "all_vs_all",
+                0: "other"}
 
 # Define all the details a game has information about
 GAME_DETAILS = ("name",
@@ -87,15 +87,15 @@ DETAIL_DF = pd.DataFrame(np.array([["name of the game", "string", "any"],
                                 columns = DETAILS_COLS,
                                 index = GAME_DETAILS)
 ALLOWED_VALUES_DICT = {"any":["any"],
-                    ">=1":[">=1"],
-                   ">=min_num_players":[">=minimum number of players"],
-                   ">=min_duration":[">=minimum duration"],
-                   "1 - NUM_POINTS":[f"1 - {NUM_POINTS}"],
-                #    "TOPICS":TOPICS.keys(),
-                   "TOPICS":TOPICS.values(),
-                   "SKILLS":SKILLS,
-                   "PHYSICAL_PARTS":PHYSICAL_PARTS,
-                   "SOCIAL_TYPES":SOCIAL_TYPES}
+                       ">=1":[">=1"],
+                       ">=min_num_players":[">=minimum number of players"],
+                       ">=min_duration":[">=minimum duration"],
+                       "1 - NUM_POINTS":[f"1 - {NUM_POINTS}"],
+                    #    "TOPICS":TOPICS.keys(),
+                       "TOPICS":TOPICS.values(),
+                       "SKILLS":SKILLS.values(),
+                       "PHYSICAL_PARTS":PHYSICAL_PARTS.values(),
+                       "SOCIAL_TYPES":SOCIAL_TYPES.values()}
 
 class Game:
     """
@@ -137,9 +137,7 @@ class Game:
     def __str__(self):
         return f"Game: {self.game_name} (ID: {self.game_id})"
     
-    def ask_topic_test(self):
-        # Trying this feature just for topic as a test...
-        detail = "topic"
+    def ask_detail_test(self, detail):
         # get the type, string and allowed values for this detail
         detail_type = DETAIL_DF.loc[detail, "type"]
         detail_string = DETAIL_DF.loc[detail, 'string']
