@@ -138,14 +138,17 @@ class Game:
     def __init__(self, name, details = {}):
         self.id = f"game_{datetime.now():%Y%m%d%H%M%S%f}"
         self.name = name
-        # Initiate all details to "NA"
-        self.details = {detail: "NA" for detail in GAME_DETAILS}
+        # Initiate all details to ""
+        self.details = {detail: "" for detail in GAME_DETAILS}
         # If there is a details dictionary given, we assign the given details
         if details:
             self.set_multi_details(details)
 
     def __str__(self):
         return f"Game: {self.name} (ID: {self.id})"
+    
+    def set_name(self, name):
+        self.name = name
 
     def set_detail(self, detail, value):
         """
@@ -203,6 +206,12 @@ class Game:
         for detail in GAME_DETAILS:
             self.ask_detail(detail)
         return self.details
+    
+    def get_id(self):
+        return self.id
+    
+    def get_name(self):
+        return self.name
 
     def get_detail(self, detail):
         """
@@ -240,15 +249,15 @@ class Game:
             value_string = self.details[detail]
         return f"The {detail_string} of {self.name} is: {value_string}"
         
-    def print_all_details(self):
+    def get_all_details_str(self):
         """
         _summary_
 
         Returns:
             _type_: _description_
         """
-        for detail in self.details:
-            print(self.get_detail_str(detail))
+        return '\n'.join([self.get_detail_str(detail) for detail in self.details])
+        
 
 
 class Collection:
