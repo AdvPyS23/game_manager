@@ -61,7 +61,8 @@ class Library:
 
     def delete(self):
         name = self.ask_name("Please enter the name of the game to delete. ")
-        if input(f"Are you sure to delete this game: {name}? Enter 'y' if so: ") == "y":
+        if input(f"Are you sure to delete this game: {name}?\
+                 \nEnter 'y' to delete or anything else to abort: ") == "y":
             self.games.pop(name)
 
     def modify(self):
@@ -106,5 +107,7 @@ class Library:
 def choose_detail():
     detail_checklist = '\n'.join([f'{det_letter}: {det_str}' for det_letter, det_str in GAME_DETAILS.items()])
     detail_key = input("\nChoose a detail (enter a single letter):\n" + detail_checklist + "\n\n")
+    while detail_key not in GAME_DETAILS.keys():
+        detail_key = input("\nThat didn't work. Try again (enter a single letter):\n")
     detail = GAME_DETAILS[detail_key]
     return detail

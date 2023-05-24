@@ -30,8 +30,11 @@ def main():
     input(WELCOME_SCREEN)
     library = user_interaction(library)
 
-    # Save the library into the file
-    if input("Do you want to save the library before you quit? Enter 'y' if so: ") == "y":
+    # Save the library into the file if user chooses to do so
+    save = input("Do you want to save the library before you quit?\nEnter 'y' or 'n': ")
+    while save != "y" and save != "n":
+        save = input("That didn't work, please try again.\nEnter 'y' for saving and 'n' for not saving: ")
+    if save == "y":
         library.save(LIBRARY_PATH)
 
 
@@ -53,14 +56,13 @@ WELCOME_SCREEN = '''
 
 '''
 
-def command_screen(lib):
-    return f'''
+COMMAND_SCREEN = '''
 
 ################################## GAME MANAGER ##################################
 
 Your library contains the following games:
 
-{str(lib)}
+{library_string}
 
 Choose your option by typing one of the following commands into the console:
 
@@ -78,6 +80,10 @@ Choose your option by typing one of the following commands into the console:
 '''
 
 def choose_action(command, lib):
+    '''
+    For a given command, perform the according action on the given library.
+    Keep asking for new input until input is a valid command.
+    '''
     valid = False
     while not valid:
         valid = True
@@ -100,10 +106,17 @@ def choose_action(command, lib):
     return lib
 
 def user_interaction(lib):
-    command_input = input(command_screen(lib))
+    '''
+    Repeats asking for commands and performs the according actions on the given library
+    Repeats until the command to quit is given.
+    Returns the (possibly) modified library.
+    '''
+    cd = COMMAND_SCREEN.format(library_string = str(lib))
+    command_input = input(cd)
     choose_action(command_input, lib)
     while command_input != "exit":
-        command_input = input(command_screen(lib))
+        cd = COMMAND_SCREEN.format(library_string = str(lib))
+        command_input = input(cd)
         lib = choose_action(command_input, lib)
     return lib
 
