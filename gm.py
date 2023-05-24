@@ -93,8 +93,7 @@ def choose_action(command, lib):
     elif command == "name":
         lib.rename()
     elif command != "exit":
-        print("This was not a valid command.")
-        input("Press Enter to continue...")
+        print("This was not a valid command. Try again:\n")
     return lib
 
 def user_interaction(lib):
