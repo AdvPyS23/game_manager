@@ -9,8 +9,10 @@ import numpy as np
 import pandas as pd
 import csv
 from game import Game, GAME_DETAILS
+from library import Library
 from collection import Collection
 from history import History
+    
 
 def main():
     # Change working directory to the path of the script
@@ -18,31 +20,17 @@ def main():
     os.chdir(dir_path)
     library_path = "./library.gm"
     
-    library = {}
+    # Initiate object library
+    library = Library()
     # If there is already a saved file for the library, load it
-    if os.path.isfile(library_path):
-        # Go through all games and create instances for them inside the library dict
-        with open(library_path, "r") as library_file:
-            reader = csv.reader(library_file)
-            for game in reader:
-                id, name, detail_string = game
-                details = detail_string.split(",")
-                detail_dict = dict(zip(GAME_DETAILS, details))
-                library[name] = Game(id, name, detail_dict)
+    if os.path.isfile(library_path): library.load(library_path)
 
     # Start the user interaction
     input(WELCOME_SCREEN)
     library = user_interaction(library)
 
-    # Save all the games into the library file
-    with open(library_path, 'w', encoding='UTF8', newline='') as library_file:
-        writer = csv.writer(library_file)
-        for name, game in library.items():
-            id = game.get_id()
-            name = game.get_name()
-### MAYBE CHECK THAT NO GAME OBJECT HAS DIFFERENT NAME THAN ETNRY IN LIBRARY...
-            details = ",".join(game.get_all_details().values())
-            writer.writerow([id, name, details])
+    # Save the library into the file
+    library.save(library_path)
 
 
 WELCOME_SCREEN = '''
@@ -63,18 +51,12 @@ WELCOME_SCREEN = '''
 
 '''
 
-def command_screen(lib):
-    '''
-    Defines and returns the command screen depending on the loaded collection
-    '''
-    games_string = "    * " + "\n    * ".join(lib.keys())
-
-    c_s = f'''
+def command_screen(lib): return f'''
 ################################################################################
     
 Your library contains the following games:
 
-{games_string}
+{str(lib)}
 
 Choose your option by typing one of the following commands into the console:
 
@@ -88,35 +70,16 @@ Choose your option by typing one of the following commands into the console:
 ################################################################################
 
 '''
-    return c_s
 
 def choose_action(command, lib):
     if command == "new":
-        id = f"game_{datetime.now():%Y%m%d%H%M%S%f}"
-        name = input("Please enter the name of the new game: ")
-        while name in lib.keys():
-            name = input("There is already a game with this name in the library. Please enter another name: ")
-        lib[name] = Game(id, name)
-        lib[name].ask_all_details()
+        lib.add()
     elif command == "del":
-        name = input("Please enter the name of the game to delete. ")
-        while name not in lib.keys():
-            name = input("There is no game with this name in the library. Please enter a valid name: ")
-        if input(f"Are you sure to delete this game: {name}? Enter 'y' if so: ") == "y":
-            lib.pop(name)
+        lib.delete()
     elif command == "mod":
-        name = input("Please enter the name of the game to change. ")
-        while name not in lib.keys():
-            name = input("There is no game with this name in the library. Please enter a valid name: ")
-        detail = input("Please enter the detail of the game to change. ")
-        while detail not in GAME_DETAILS:
-            detail = input("There is no such detail. Please enter a valid detail: ")
-        lib[name].ask_detail(detail)
+        lib.modify()
     elif command == "see":
-        name = input("Please enter the name of the game to see. ")
-        while name not in lib.keys():
-            name = input("There is no game with this name in the library. Please enter a valid name: ")
-        print("\n" + lib[name].get_all_details_str())
+        lib.show_game()
         input("\nPress enter to continue...")
     elif command != "exit":
         print("This was not a valid command.")

@@ -1,11 +1,8 @@
 """
-This is the main script to run the game manager.
+This is a module containing the class History of the game manager and helper functions.
+It is required to run the tool.
 
 Classes:
-    Game
-        _summary_
-    Collection
-        _summary_
     History
         _summary_
 
