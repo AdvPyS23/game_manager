@@ -105,8 +105,8 @@ ALLOWED_VALUES_DICT = {">=1":[">=1"],
 class Game:
     """
     This is the class for an individual game.
-    It stores all the intrinsic properties of a game (see attributes)
-    It does not store information about the history/events of playing a game
+    It stores all the intrinsic properties of a game (id, name, details).
+    It does not store information about the history/events of playing a game.
 
     Attributes
     ----------

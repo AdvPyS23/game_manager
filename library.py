@@ -21,8 +21,8 @@ from game import Game, GAME_DETAILS
 class Library:
     """
     This is the class for a game library.
-    It stores the games.
-    It does not store information about the history/events of playing a game
+    It stores the games, including all their informations.
+    It does not store information about the history/events of playing a game.
     """
 
     def __init__(self):
@@ -48,7 +48,7 @@ class Library:
             for name, game in self.games.items():
                 id = game.get_id()
                 name = game.get_name()
-### MAYBE CHECK THAT NO GAME OBJECT HAS DIFFERENT NAME THAN ETNRY IN LIBRARY...
+### MAYBE CHECK THAT NO GAME OBJECT HAS DIFFERENT NAME THAN ENTRY IN LIBRARY...
                 details = ",".join(game.get_all_details().values())
                 writer.writerow([id, name, details])    
 
