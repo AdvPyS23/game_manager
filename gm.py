@@ -26,7 +26,6 @@ def main():
     """
     Starts, runs and ends the tool
     """
-
     # Initiate object library (empty)
     library = Library()
     # If there is already a saved file for the library, load it
