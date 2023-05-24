@@ -79,21 +79,25 @@ Choose your option by typing one of the following commands into the console:
 '''
 
 def choose_action(command, lib):
-    if command == "new":
-        lib.add()
-    elif command == "del":
-        lib.delete()
-    elif command == "mod":
-        lib.modify()
-    elif command == "see":
-        lib.show()
-        input("\nPress enter to continue...")
-    elif command == "save":
-        lib.save(LIBRARY_PATH)
-    elif command == "name":
-        lib.rename()
-    elif command != "exit":
-        print("This was not a valid command. Try again:\n")
+    valid = False
+    while not valid:
+        valid = True
+        if command == "new":
+            lib.add()
+        elif command == "del":
+            lib.delete()
+        elif command == "mod":
+            lib.modify()
+        elif command == "see":
+            lib.show()
+            input("\nPress enter to continue...")
+        elif command == "save":
+            lib.save(LIBRARY_PATH)
+        elif command == "name":
+            lib.rename()
+        elif command != "exit":
+            command = input("This was not a valid command. Try again:\n")
+            valid = False
     return lib
 
 def user_interaction(lib):
