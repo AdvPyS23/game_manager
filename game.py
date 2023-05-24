@@ -179,7 +179,8 @@ class Game:
             except AssertionError:
                 print(error_message)
         # If it's of no known type, raise a specific error
-        else: raise ValueError(f"There was no test found for this detail type ({detail_type}). \
+        else:
+            raise ValueError(f"There was no test found for this detail type ({detail_type}). \
                                Nothing was changed. Try again.")
         # If all tests are passed and no error raised, set the detail to the entered value
         self.details[detail] = value
