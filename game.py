@@ -147,14 +147,14 @@ class Game:
         return f"Game: {self.name} (ID: {self.id})"
 
     def set_name(self, name):
+        """
+        Sets the name of the game to the value (string) given
+        """
         self.name = name
 
     def set_detail(self, detail, value):
         """
-        _summary_
-
-        Returns:
-            _type_: _description_
+        Sets the given detail to the value given
         """
         detail_type = find_detail_attribute(detail, "type")
         allowed_values = find_detail_attribute(detail, "allowed_values")
@@ -186,10 +186,16 @@ class Game:
         self.details[detail] = value
 
     def set_multi_details(self, details_dict):
+        """
+        Sets multiple details according to the dictionary given in the form {details: values}
+        """
         for key, val in details_dict.items():
             self.set_detail(key, val)
 
     def ask_detail(self, detail):
+        """
+        Asks the user for the value of the given detail and sets it according to the input
+        """
         # get the type, string and allowed values for this detail
         detail_type = find_detail_attribute(detail, "type")
         detail_string = find_detail_attribute(detail, "string")
@@ -205,45 +211,39 @@ class Game:
 
     def ask_all_details(self):
         """
-        _summary_
-
-        Returns:
-            _type_: _description_
+        Asks the user for the value of all details and sets them according to the inputs
         """
         for detail in GAME_DETAILS.values():
             self.ask_detail(detail)
         return self.details
 
     def get_id(self):
+        """
+        Finds and returns the id of the game
+        """
         return self.id
 
     def get_name(self):
+        """
+        Finds and returns the name of the game
+        """
         return self.name
 
     def get_detail(self, detail):
         """
-        _summary_
-
-        Returns:
-            _type_: _description_
+        Finds and returns the value of the given detail
         """
         return self.details[detail]
 
     def get_all_details(self):
         """
-        _summary_
-
-        Returns:
-            _type_: _description_
+        Returns the dictionary of detail:value pairs of all details
         """
         return self.details
 
     def get_detail_str(self, detail):
         """
-        _summary_
-
-        Returns:
-            _type_: _description_
+        Creates and returns an appropriate string containing the value for the given detail
         """
         detail_type = find_detail_attribute(detail, "type")
         detail_string = find_detail_attribute(detail, "string")
@@ -262,10 +262,7 @@ class Game:
         
     def get_all_details_str(self):
         """
-        _summary_
-
-        Returns:
-            _type_: _description_
+        Creates and returns an appropriate string containing the values for all details
         """
         return '\n'.join([self.get_detail_str(detail) for detail in self.details])
 
@@ -275,7 +272,7 @@ class Game:
 ###################################
 
 def choice_input(detail_string, allowed_values):
-    '''
+    """
     Asks the user to input a selection for a detail of type "choice"
     Repeats until a valid user input value is given
 
@@ -286,7 +283,7 @@ def choice_input(detail_string, allowed_values):
 
     Returns:
         valid_response: a string containing the keys of the dictionary belonging to the detail of type "choice"
-    '''
+    """
     # DOING THIS THE OLD FASHIONED WAY TO TRY OUT FUNCTIONALITY, JUST BECAUSE MY BRAIN CAN'T HANDLE CHAIN, REPEAT ETC. RIGHT NOW
     choice_checklist = '\n'.join([f'{k}: {v}' for k, v in allowed_values.items()])
     reply = input(f"What is the {detail_string}?\
@@ -308,7 +305,7 @@ def choice_input(detail_string, allowed_values):
     return valid_response
 
 def num_input(detail_type, detail_string, allowed_values):
-    '''
+    """
     Asks the user to input a numeric value for a detail of type "int" or "int_range"
     Repeats until a valid user input value is given
 
@@ -319,7 +316,7 @@ def num_input(detail_type, detail_string, allowed_values):
 
     Returns:
         valid_response: a string containing the user input number
-    '''
+    """
     # Create an iterator of prompts (as strings)
     # with the first being the initial prompt for the detail
     # and possibly infinite requests for correcting the input
@@ -336,7 +333,7 @@ def num_input(detail_type, detail_string, allowed_values):
     return valid_response
 
 def sort_test_choice(input_num_string, allowed_values):
-    '''
+    """
     Checks if the digits in the input string are all in the allowed values, returns them unique & sorted
     
     Inputs:
@@ -346,8 +343,7 @@ def sort_test_choice(input_num_string, allowed_values):
     Returns:
         IF TEST PASSED: A string containing the sorted and unique digits of the input string
         IF TEST FAILS:  False
-
-    '''
+    """
     # Take apart the numbers (still as strings), remove duplicates and sort
     nums = sorted(set(input_num_string))
     # Test if all numbers are in the allowed vlaues
@@ -358,7 +354,7 @@ def sort_test_choice(input_num_string, allowed_values):
         return "".join(nums)
 
 def find_detail_attribute(detail, attribute):
-    '''
+    """
     Finds a certain attribute to a given detail ...
     ... in the DETAIL_DF (and ALLOWED_VALUES_DICT) and returns it
 
@@ -367,7 +363,7 @@ def find_detail_attribute(detail, attribute):
         attribute:  Which attribute to test (should be "type", "string" or "allowed_values")
     Returns:
         output:     The found attribute for the detail
-    '''
+    """
     # Make sure the attribute given is valid (i.e. in the DETAIL_ATTRIBUTES)
     output = None
     try:
