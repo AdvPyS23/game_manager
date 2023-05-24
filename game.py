@@ -163,7 +163,7 @@ class Game:
 
         # Test, for the type of detail given, the value entered
         if detail_type == "int":
-            if (not value.isdigit()) or (int(value) > 0):
+            if (not value.isdigit()) or (int(value) <= 0):
                 raise ValueError(error_message)
         elif detail_type == "int_range":
             if (not value.isdigit()) or (not 1 <= int(value) <= NUM_POINTS):
