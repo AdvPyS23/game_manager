@@ -107,16 +107,14 @@ def choose_action(command, lib):
 
 def user_interaction(lib):
     '''
-    Repeats asking for commands and performs the according actions on the given library
+    Asks for commands and performs the according actions on the given library
     Repeats until the command to quit is given.
     Returns the (possibly) modified library.
     '''
-    cd = COMMAND_SCREEN.format(library_string = str(lib))
-    command_input = input(cd)
-    choose_action(command_input, lib)
+    command_input = input(COMMAND_SCREEN.format(library_string = str(lib)))
+    lib = choose_action(command_input, lib)
     while command_input != "exit":
-        cd = COMMAND_SCREEN.format(library_string = str(lib))
-        command_input = input(cd)
+        command_input = input(COMMAND_SCREEN.format(library_string = str(lib)))
         lib = choose_action(command_input, lib)
     return lib
 
