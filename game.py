@@ -47,7 +47,7 @@ TOPICS = {"0": "fantasy",
 
 SKILLS = {"0": "logics",
           "1": "dexterity",
-          "2": "intuition",
+          "2": "speed/reaction",
           "3": "creativity",
           "4": "knowledge",
           "5": "strategy",
@@ -313,8 +313,8 @@ def num_input(detail_type, detail_string, allowed_values):
     Repeats until a valid user input value is given
 
     Inputs:
-        detail_type:    "int" or "int_range"
-        detail_string:  String of the detail (ideally including a list of allowed values)
+        detail_type:    String, "int" or "int_range"
+        detail_string:  String of the detail (e.g. "minimum number of players")
         allowed_values: A string describing what numbers are allowed
 
     Returns:
@@ -329,7 +329,7 @@ def num_input(detail_type, detail_string, allowed_values):
     replies = map(input, prompts)
     # Check if the values are valid for that type
     if detail_type == "int":
-        valid_response = next(filter(lambda reply: (reply.isdigit() and int(reply)>0), replies))
+        valid_response = next(filter(lambda reply: (reply.isdigit() and 1 <= int(reply)), replies))
     elif detail_type == "int_range":
         valid_response = next(filter(lambda reply: (reply.isdigit() and 1 <= int(reply) <= NUM_POINTS), replies))
 
@@ -337,7 +337,7 @@ def num_input(detail_type, detail_string, allowed_values):
 
 def sort_test_choice(input_num_string, allowed_values):
     '''
-    Checks if the digits in the input string are all in the allowed values
+    Checks if the digits in the input string are all in the allowed values, returns them unique & sorted
     
     Inputs:
         input_string:   String to test (should only contain allowed digits)
@@ -359,16 +359,21 @@ def sort_test_choice(input_num_string, allowed_values):
 
 def find_detail_attribute(detail, attribute):
     '''
-    Tests wether a detail has a certain attribute ...
+    Finds a certain attribute to a given detail ...
     ... in the DETAIL_DF (and ALLOWED_VALUES_DICT) and returns it
 
     Inputs:
         detail:     Which detail to test
         attribute:  Which attribute to test (should be "type", "string" or "allowed_values")
     Returns:
-        output:     the found attribute for the detail
+        output:     The found attribute for the detail
     '''
-    output = None
+    # Make sure the attribute given is valid (i.e. in the DETAIL_ATTRIBUTES)
+    try:
+        assert attribute in DETAIL_ATTRIBUTES
+    except AssertionError:
+            print("This is not a valid attribute.")
+    # Find the attribute of the given detail
     if attribute == "type":
         try:
             output = DETAIL_DF.loc[detail, "type"]

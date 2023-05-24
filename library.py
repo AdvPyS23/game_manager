@@ -51,7 +51,7 @@ class Library:
                 name = game.get_name()
 ### MAYBE CHECK THAT NO GAME OBJECT HAS DIFFERENT NAME THAN ENTRY IN LIBRARY...
                 details = ",".join(game.get_all_details().values())
-                writer.writerow([gm_id, name, details])    
+                writer.writerow([gm_id, name, details])
 
     def add(self):
         gm_id = f"game_{datetime.now():%Y%m%d%H%M%S%f}"
@@ -61,7 +61,8 @@ class Library:
 
     def delete(self):
         name = self.ask_name("Please enter the name of the game to delete. ")
-        if input(f"Are you sure to delete this game: {name}? Enter 'y' if so: ") == "y":
+        if input(f"Are you sure to delete this game: {name}?\
+                 \nEnter 'y' to delete or anything else to abort: ") == "y":
             self.games.pop(name)
 
     def modify(self):
@@ -93,18 +94,20 @@ class Library:
         # Ask for the existing name of the game to change
         name = input(input_string)
         while name not in self.games.keys():
-            name = input("There is no game with this name in the library. Please enter a valid name (case sensitive): ")
+            name = input("There is no game with this name in the library.\nPlease enter a valid name (case sensitive): ")
         return name
 
     def ask_new_name(self, input_string):
         # Ask for the new name, and make sure it does not yet exist
         new_name = input(input_string)
         while new_name in self.games.keys():
-            new_name = input("There is already a game with this name in the library. Please enter another name: ")
+            new_name = input("There is already a game with this name in the library.\nPlease enter another name: ")
         return new_name
 
 def choose_detail():
     detail_checklist = '\n'.join([f'{det_letter}: {det_str}' for det_letter, det_str in GAME_DETAILS.items()])
-    detail_key = input("Choose a detail (enter a single letter):\n" + detail_checklist)
+    detail_key = input("\nChoose a detail (enter a single letter):\n" + detail_checklist + "\n\n")
+    while detail_key not in GAME_DETAILS.keys():
+        detail_key = input("\nThat didn't work. Try again (enter a single letter):\n")
     detail = GAME_DETAILS[detail_key]
     return detail

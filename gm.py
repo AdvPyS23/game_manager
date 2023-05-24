@@ -1,6 +1,6 @@
 """
 This is the file to run the game manager.
-It requires the modules game, library, collection and history to run.
+It requires the modules game, library and history to run.
 """
 
 import os
@@ -10,7 +10,6 @@ import os
 #from datetime import datetime
 #from game import Game, GAME_DETAILS
 from library import Library
-#from collection import Collection
 #from history import History
 
 
@@ -31,8 +30,11 @@ def main():
     input(WELCOME_SCREEN)
     library = user_interaction(library)
 
-    # Save the library into the file
-    if input("Do you want to save the library before you quit? Enter 'y' if so: ") == "y":
+    # Save the library into the file if user chooses to do so
+    save = input("Do you want to save the library before you quit?\nEnter 'y' or 'n': ")
+    while save != "y" and save != "n":
+        save = input("That didn't work, please try again.\nEnter 'y' for saving and 'n' for not saving: ")
+    if save == "y":
         library.save(LIBRARY_PATH)
 
 
@@ -54,14 +56,13 @@ WELCOME_SCREEN = '''
 
 '''
 
-def command_screen(lib):
-    return f'''
+COMMAND_SCREEN = '''
 
 ################################## GAME MANAGER ##################################
 
 Your library contains the following games:
 
-{str(lib)}
+{library_string}
 
 Choose your option by typing one of the following commands into the console:
 
@@ -79,98 +80,42 @@ Choose your option by typing one of the following commands into the console:
 '''
 
 def choose_action(command, lib):
-    if command == "new":
-        lib.add()
-    elif command == "del":
-        lib.delete()
-    elif command == "mod":
-        lib.modify()
-    elif command == "see":
-        lib.show()
-        input("\nPress enter to continue...")
-    elif command == "save":
-        lib.save(LIBRARY_PATH)
-    elif command == "name":
-        lib.rename()
-    elif command != "exit":
-        print("This was not a valid command.")
-        input("Press Enter to continue...")
+    '''
+    For a given command, perform the according action on the given library.
+    Keep asking for new input until input is a valid command.
+    '''
+    valid = False
+    while not valid:
+        valid = True
+        if command == "new":
+            lib.add()
+        elif command == "del":
+            lib.delete()
+        elif command == "mod":
+            lib.modify()
+        elif command == "see":
+            lib.show()
+            input("\nPress enter to continue...")
+        elif command == "save":
+            lib.save(LIBRARY_PATH)
+        elif command == "name":
+            lib.rename()
+        elif command != "exit":
+            command = input("This was not a valid command. Try again:\n")
+            valid = False
     return lib
 
 def user_interaction(lib):
-    command_input = input(command_screen(lib))
-    choose_action(command_input, lib)
+    '''
+    Asks for commands and performs the according actions on the given library
+    Repeats until the command to quit is given.
+    Returns the (possibly) modified library.
+    '''
+    command_input = input(COMMAND_SCREEN.format(library_string = str(lib)))
+    lib = choose_action(command_input, lib)
     while command_input != "exit":
-        command_input = input(command_screen(lib))
+        command_input = input(COMMAND_SCREEN.format(library_string = str(lib)))
         lib = choose_action(command_input, lib)
     return lib
 
 main()
-
-
-
-
-###################################
-### TESTS
-###################################
-
-# tichu = Game("Tichu")
-# print(tichu)
-# # Game: Tichu (ID: game_*
-# tichu.set_detail("min_num_players", 3)
-# print(tichu.get_detail("min_num_players"))
-# # 3
-# tichu.set_detail("min_num_players", 0)
-# # Error
-# print(tichu.get_detail("min_num_players"))
-# # 3
-# #### !!!!!!!!!!!!!   WRONG RESULT   !!!!!!!!!!!!! #############
-# tichu.set_detail("max_num_players", 24)
-# print(tichu.get_detail("max_num_players"))
-# # 24
-# tichu.set_detail("complexity", 7)
-# print(tichu.get_detail("complexity"))
-# # 7
-# tichu.set_detail("complexity", 24)
-# # Error
-# print(tichu.get_detail("complexity"))
-# # 7
-# #### !!!!!!!!!!!!!   WRONG RESULT   !!!!!!!!!!!!! #############
-# tichu.set_detail("social_type", "13")
-# print(tichu.get_detail("social_type"))
-# # 13
-# print(tichu.get_detail_str("social_type"))
-# # The social type (cooperative, one_vs_all, teams, all_vs_all, other) of Tichu is: one_vs_all, all_vs_all
-
-
-# details_in = {"min_num_players": "2",
-#               "max_num_players": "6",
-#               "min_duration": "60",
-#               "max_duration": "120",
-#               "min_age": "12",
-#               "complexity": "5",
-#               "difficulty": "9",
-#               "topic": "1",
-#               "skills": "23",
-#               "physical_form": "9319",
-#               "social_type": "21"}
-# tichu.set_multi_details(details_in)
-# print(tichu.get_all_details())
-# # {'min_num_players': '2', 'max_num_players': '6', 'min_duration': '60', 'max_duration': '120',
-# # 'min_age': '12', 'complexity': '5', 'difficulty': '9', 'topic': '1', 'skills': '23',
-# # 'physical_form': '139', 'social_type': '12'}
-# print(tichu.get_detail("physical_form"))
-# # 139
-# print(tichu.get_detail_str("physical_form"))
-# # The physical form (board, cards, dice, supplementals, other) of Tichu is: cards, supplementals, other
-
-# tichu.ask_detail("min_duration")
-# # --> enter 4
-# print(tichu.get_detail("min_duration"))
-# # 4
-
-# tichu.ask_detail("social_type")
-# print(tichu.get_detail("min_duration"))
-
-# tichu.ask_all_details()
-# print(tichu.get_all_details())
