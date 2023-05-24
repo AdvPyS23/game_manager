@@ -49,4 +49,5 @@ Presentation (in person and in class)           | Deadline: June 1      |
 - [x] Optimise ask_detail; e.g. multiple inputs for "choice" type
 - [x] Work on user interface in gm.py
 - [ ] Add search/filter
+- [ ] Add visualization
 - [ ] Add history
