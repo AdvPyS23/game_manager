@@ -135,7 +135,7 @@ class Game:
     """
 
     def __init__(self, gm_id, name, details = False):
-        self.id = gm_id
+        self.gm_id = gm_id
         self.set_name(name)
         # Initiate all details to ""
         self.details = {detail: "" for detail in GAME_DETAILS.values()}
@@ -144,7 +144,7 @@ class Game:
             self.set_multi_details(details)
 
     def __str__(self):
-        return f"Game: {self.name} (ID: {self.id})"
+        return f"Game: {self.name} (ID: {self.gm_id})"
 
     def set_name(self, name):
         """
@@ -221,7 +221,7 @@ class Game:
         """
         Finds and returns the id of the game
         """
-        return self.id
+        return self.gm_id
 
     def get_name(self):
         """
@@ -259,7 +259,7 @@ class Game:
         # Make padding from the chosen detail_string up to the longest
         padding = " " * (max_len_detail_strings - len(detail_string))
         return f"{detail_string}: {padding}{value_string}"
-        
+
     def get_all_details_str(self):
         """
         Creates and returns an appropriate string containing the values for all details
@@ -370,7 +370,7 @@ def find_detail_attribute(detail, attribute):
     try:
         assert attribute in DETAIL_ATTRIBUTES
     except AssertionError:
-            print("This is not a valid attribute.")
+        print("This is not a valid attribute.")
     # Find the attribute of the given detail
     if attribute == "type":
         try:
