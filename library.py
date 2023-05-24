@@ -105,6 +105,6 @@ class Library:
 
 def choose_detail():
     detail_checklist = '\n'.join([f'{det_letter}: {det_str}' for det_letter, det_str in GAME_DETAILS.items()])
-    detail_key = input("Choose a detail (enter a single letter):\n" + detail_checklist)
+    detail_key = input("\nChoose a detail (enter a single letter):\n" + detail_checklist + "\n\n")
     detail = GAME_DETAILS[detail_key]
     return detail
