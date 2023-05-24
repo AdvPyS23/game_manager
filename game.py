@@ -386,5 +386,3 @@ def find_detail_attribute(detail, attribute):
             print(f"Allowed values for this detail ({detail}) not found, \
                     either in the DETAIL_DF or in the ALLOWED_VALUES_DICT")
     return output
-
-print(find_detail_attribute("topic", "attribute"))
