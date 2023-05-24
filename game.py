@@ -134,8 +134,8 @@ class Game:
         _summary_
     """
 
-    def __init__(self, id, name, details = {}):
-        self.id = id
+    def __init__(self, gm_id, name, details = False):
+        self.id = gm_id
         self.set_name(name)
         # Initiate all details to ""
         self.details = {detail: "" for detail in GAME_DETAILS.values()}
@@ -254,8 +254,12 @@ class Game:
             value_string = ", ".join([allowed_values[num] for num in key_string])
         else:
             value_string = self.details[detail]
-        return f"{detail_string}: {value_string}"
-
+        # See how long the longest detail string is
+        max_len_detail_strings = np.max([len(det_str) for det_str in DETAIL_DF.loc[:,"string"]])
+        # Make padding from the chosen detail_string up to the longest
+        padding = " " * (max_len_detail_strings - len(detail_string))
+        return f"{detail_string}: {padding}{value_string}"
+        
     def get_all_details_str(self):
         """
         _summary_

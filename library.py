@@ -27,7 +27,7 @@ class Library:
     """
 
     def __init__(self):
-        self.games = {}
+        self.games = dict()
 
     def __str__(self):
         return "    * " + "\n    * ".join(self.games.keys())
@@ -37,26 +37,26 @@ class Library:
         with open(library_path, "r") as library_file:
             reader = csv.reader(library_file)
             for game in reader:
-                id, name, detail_string = game
+                gm_id, name, detail_string = game
                 details = detail_string.split(",")
                 detail_dict = dict(zip(GAME_DETAILS.values(), details))
-                self.games[name] = Game(id, name, detail_dict)
+                self.games[name] = Game(gm_id, name, detail_dict)
 
     def save(self, library_path):
         # Save all the games into the library file
         with open(library_path, 'w', encoding='UTF8', newline='') as library_file:
             writer = csv.writer(library_file)
             for name, game in self.games.items():
-                id = game.get_id()
+                gm_id = game.get_id()
                 name = game.get_name()
 ### MAYBE CHECK THAT NO GAME OBJECT HAS DIFFERENT NAME THAN ENTRY IN LIBRARY...
                 details = ",".join(game.get_all_details().values())
-                writer.writerow([id, name, details])
+                writer.writerow([gm_id, name, details])    
 
     def add(self):
-        id = f"game_{datetime.now():%Y%m%d%H%M%S%f}"
+        gm_id = f"game_{datetime.now():%Y%m%d%H%M%S%f}"
         name = self.ask_new_name("Please enter the name of the new game: ")
-        self.games[name] = Game(id, name)
+        self.games[name] = Game(gm_id, name)
         self.games[name].ask_all_details()
 
     def delete(self):
@@ -71,13 +71,15 @@ class Library:
 
     def show(self):
         name = self.ask_name("Please enter the name of the game to see. ")
-        print("\n=== " + name + " ===\n" + self.games[name].get_all_details_str())
+        title = "============ " + name + " ============"
+        bottom = "=" * (26 + len(name))
+        print("\n" + title + "\n\n" + self.games[name].get_all_details_str() + "\n\n" + bottom)
 
     def rename(self):
         # Ask for the existing name of the game to change
         name = self.ask_name("Please enter the name of the game to rename. ")
         # Get the old id, it should be retained
-        id = self.games[name].get_id()
+        gm_id = self.games[name].get_id()
         # Get all the details of the game
         details = self.games[name].get_all_details()
         # Ask for the new name, and make sure it does not yet exist
@@ -85,7 +87,7 @@ class Library:
         # Delete the old game
         self.games.pop(name)
         # Create a new game with the same id and details but the new name
-        self.games[new_name] = Game(id, new_name, details)
+        self.games[new_name] = Game(gm_id, new_name, details)
 
     def ask_name(self, input_string):
         # Ask for the existing name of the game to change

@@ -67,21 +67,21 @@ class Collection:
     def __str__(self):
         return f"Collection: {self.name} (ID: {self.id})"
 
-    def load_file(self, id):
+    def load_file(self, game_id):
         """
         _summary_
 
         Returns:
             _type_: _description_
         """
-        data_file = f"./{id}.gmcol"
+        data_file = f"./{game_id}.gmcol"
         if os.path.isfile(data_file):
             with open(data_file, newline="") as csvfile:
                 reader = csv.DictReader(csvfile)
                 for row in reader:
                     self.dict = {"game_id":row["game_id"], "game_detail":row["game_details"]}
         else:
-            print(f"There is no collection with the id {id} available.")
+            print(f"There is no collection with the id {game_id} available.")
 
     def save(self):
         """
