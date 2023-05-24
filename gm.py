@@ -23,6 +23,9 @@ LIBRARY_PATH = "./library.gm"
 ###################################
 
 def main():
+    """
+    Starts, runs and ends the tool
+    """
 
     # Initiate object library (empty)
     library = Library()
