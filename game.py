@@ -368,6 +368,12 @@ def find_detail_attribute(detail, attribute):
     Returns:
         output:     The found attribute for the detail
     '''
+    # Make sure the attribute given is valid (i.e. in the DETAIL_ATTRIBUTES)
+    try:
+        assert attribute in DETAIL_ATTRIBUTES
+    except AssertionError:
+            print("This is not a valid attribute.")
+    # Find the attribute of the given detail
     if attribute == "type":
         try:
             output = DETAIL_DF.loc[detail, "type"]
