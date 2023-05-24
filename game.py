@@ -22,17 +22,17 @@ import pandas as pd
 ###################################
 
 # Define all the details a game has information about
-GAME_DETAILS = ("min_num_players",
-                "max_num_players",
-                "min_duration",
-                "max_duration",
-                "min_age",
-                "complexity",
-                "difficulty",
-                "topic",
-                "skills",
-                "physical_form",
-                "social_type")
+GAME_DETAILS = {"a": "min_num_players",
+                "b": "max_num_players",
+                "c": "min_duration",
+                "d": "max_duration",
+                "e": "min_age",
+                "f": "complexity",
+                "g": "difficulty",
+                "h": "topic",
+                "i": "skills",
+                "j": "physical_form",
+                "k": "social_type"}
 
 # Define the number of points to give for details such as complexity and difficulty
 NUM_POINTS =  10
@@ -86,7 +86,7 @@ DETAIL_DF = pd.DataFrame(np.array([["minimum number of players", "int", ">=1"],
                                    [f"physical form", "choice", "PHYSICAL_FORM"],
                                    [f"social type", "choice", "SOCIAL_TYPES"]]),
                                    columns = DETAIL_ATTRIBUTES,
-                                   index = GAME_DETAILS)
+                                   index = GAME_DETAILS.values())
 
 ALLOWED_VALUES_DICT = {">=1":[">=1"],
                        ">=min_num_players":[">=minimum number of players"],
@@ -138,7 +138,7 @@ class Game:
         self.id = id
         self.set_name(name)
         # Initiate all details to ""
-        self.details = {detail: "" for detail in GAME_DETAILS}
+        self.details = {detail: "" for detail in GAME_DETAILS.values()}
         # If there is a details dictionary given, we assign the given details
         if details:
             self.set_multi_details(details)
@@ -209,7 +209,7 @@ class Game:
         Returns:
             _type_: _description_
         """
-        for detail in GAME_DETAILS:
+        for detail in GAME_DETAILS.values():
             self.ask_detail(detail)
         return self.details
 
