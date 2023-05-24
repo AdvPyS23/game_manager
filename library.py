@@ -18,6 +18,7 @@ import pandas as pd
 import csv
 from game import Game, GAME_DETAILS
 
+
 class Library:
     """
     This is the class for a game library.
@@ -54,48 +55,50 @@ class Library:
 
     def add(self):
         id = f"game_{datetime.now():%Y%m%d%H%M%S%f}"
-        name = input("Please enter the name of the new game: ")
-        while name in self.games.keys():
-            name = input("There is already a game with this name in the library. Please enter another name: ")
+        name = self.ask_new_name("Please enter the name of the new game: ")
         self.games[name] = Game(id, name)
         self.games[name].ask_all_details()
         
     def delete(self):
-        name = input("Please enter the name of the game to delete. ")
-        while name not in self.games.keys():
-            name = input("There is no game with this name in the library. Please enter a valid name: ")
+        name = self.ask_name("Please enter the name of the game to delete. ")
         if input(f"Are you sure to delete this game: {name}? Enter 'y' if so: ") == "y":
             self.games.pop(name)
     
     def modify(self):
-        name = input("Please enter the name of the game to change. ")
-        while name not in self.games.keys():
-            name = input("There is no game with this name in the library. Please enter a valid name: ")
+        name = self.ask_name("Please enter the name of the game to change. ")
         detail = input("Please enter the detail of the game to change. ")
         while detail not in GAME_DETAILS:
             detail = input("There is no such detail. Please enter a valid detail: ")
         self.games[name].ask_detail(detail)
 
     def show_game(self):
-        name = input("Please enter the name of the game to see. ")
-        while name not in self.games.keys():
-            name = input("There is no game with this name in the library. Please enter a valid name: ")
+        name = self.ask_name("Please enter the name of the game to see. ")
         print("\n" + self.games[name].get_all_details_str())
     
     def rename(self):
         # Ask for the existing name of the game to change
-        name = input("Please enter the name of the game to rename. ")
-        while name not in self.games.keys():
-            name = input("There is no game with this name in the library. Please enter a valid name: ")
+        name = self.ask_name("Please enter the name of the game to rename. ")
         # Get the old id, it should be retained
         id = self.games[name].get_id()
         # Get all the details of the game
         details = self.games[name].get_all_details()
         # Ask for the new name, and make sure it does not yet exist
-        new_name = input("Please enter the name of the new game: ")
-        while new_name in self.games.keys():
-            new_name = input("There is already a game with this name in the library. Please enter another name: ")
+        new_name = self.ask_new_name("Please enter the name of the new game: ")
         # Delete the old game
         self.games.pop(name)
         # Create a new game with the same id and details but the new name
         self.games[new_name] = Game(id, new_name, details)
+
+    def ask_name(self, input_string):
+        # Ask for the existing name of the game to change
+        name = input(input_string)
+        while name not in self.games.keys():
+            name = input("There is no game with this name in the library. Please enter a valid name (case sensitive): ")
+        return name
+    
+    def ask_new_name(self, input_string):
+        # Ask for the new name, and make sure it does not yet exist
+        new_name = input(input_string)
+        while new_name in self.games.keys():
+            new_name = input("There is already a game with this name in the library. Please enter another name: ")
+        return new_name

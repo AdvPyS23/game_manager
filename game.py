@@ -136,7 +136,7 @@ class Game:
 
     def __init__(self, id, name, details = {}):
         self.id = id
-        self.name = name
+        self.set_name(name)
         # Initiate all details to ""
         self.details = {detail: "" for detail in GAME_DETAILS}
         # If there is a details dictionary given, we assign the given details

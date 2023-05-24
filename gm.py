@@ -1,6 +1,6 @@
 """
 This is the file to run the game manager.
-It requires the modules game, collection and history to run.
+It requires the modules game, library, collection and history to run.
 """
 
 import os
