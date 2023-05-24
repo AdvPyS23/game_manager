@@ -15,7 +15,7 @@ complexity      | int-range | 1 - NUM_POINTS
 difficulty      | int-range | 1 - NUM_POINTS
 topic           | string    | Fantasy, Science Fiction, Real World, Abstract, Adaptation, other
 skills          | string    | Logics, Dexterity, Intuition, Creativity, Knowledge, Strategy, Negotiation, Luck, Roleplay
-physical_parts  | string    | board, cards, dice, supplementals, other
+physical_form   | string    | board, cards, dice, supplementals, other
 social_type     | string    | cooperative, 1_v_all, teams, all_v_all, other
 
 ## History (df saved in file history.gmhist)

@@ -13,7 +13,7 @@ complexity,
 difficulty,
 topic,
 skills,
-physical_parts,
+physical_form,
 social_type
 
 Ex.: "4,6,45,60,14,6,7,12,29,01,1"

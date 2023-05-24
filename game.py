@@ -31,7 +31,7 @@ GAME_DETAILS = ("min_num_players",
                 "difficulty",
                 "topic",
                 "skills",
-                "physical_parts",
+                "physical_form",
                 "social_type")
 
 # Define the number of points to give for details such as complexity and difficulty
@@ -56,7 +56,7 @@ SKILLS = {"0": "logics",
           "8": "roleplay",
           "9": "other"}
 
-PHYSICAL_PARTS = {"0": "board",
+PHYSICAL_FORM = {"0": "board",
                   "1": "cards",
                   "2": "dice",
                   "3": "supplementals",
@@ -70,8 +70,8 @@ SOCIAL_TYPES = {"0": "cooperative",
 
 # Definie attributes for each detail
 DETAIL_ATTRIBUTES = ("string",
-                "type",
-                "allowed_values")
+                     "type",
+                     "allowed_values")
 
 # Create data frame with the details a game can have and its attributes
 DETAIL_DF = pd.DataFrame(np.array([["minimum number of players", "int", ">=1"],
@@ -83,10 +83,10 @@ DETAIL_DF = pd.DataFrame(np.array([["minimum number of players", "int", ">=1"],
                                    [f"difficulty level (1 - {NUM_POINTS})", "int_range", "1 - NUM_POINTS"],
                                    [f"topic", "choice", "TOPICS"],
                                    [f"skill needed", "choice", "SKILLS"],
-                                   [f"physical part", "choice", "PHYSICAL_PARTS"],
+                                   [f"physical form", "choice", "PHYSICAL_FORM"],
                                    [f"social type", "choice", "SOCIAL_TYPES"]]),
-                                columns = DETAIL_ATTRIBUTES,
-                                index = GAME_DETAILS)
+                                   columns = DETAIL_ATTRIBUTES,
+                                   index = GAME_DETAILS)
 
 ALLOWED_VALUES_DICT = {">=1":[">=1"],
                        ">=min_num_players":[">=minimum number of players"],
@@ -94,7 +94,7 @@ ALLOWED_VALUES_DICT = {">=1":[">=1"],
                        "1 - NUM_POINTS":[f"1 - {NUM_POINTS}"],
                        "TOPICS":TOPICS,
                        "SKILLS":SKILLS,
-                       "PHYSICAL_PARTS":PHYSICAL_PARTS,
+                       "PHYSICAL_FORM":PHYSICAL_FORM,
                        "SOCIAL_TYPES":SOCIAL_TYPES}
 
 

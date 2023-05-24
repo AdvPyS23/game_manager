@@ -149,17 +149,17 @@ main()
 #               "difficulty": "9",
 #               "topic": "1",
 #               "skills": "23",
-#               "physical_parts": "9319",
+#               "physical_form": "9319",
 #               "social_type": "21"}
 # tichu.set_multi_details(details_in)
 # print(tichu.get_all_details())
 # # {'min_num_players': '2', 'max_num_players': '6', 'min_duration': '60', 'max_duration': '120',
 # # 'min_age': '12', 'complexity': '5', 'difficulty': '9', 'topic': '1', 'skills': '23',
-# # 'physical_parts': '139', 'social_type': '12'}
-# print(tichu.get_detail("physical_parts"))
+# # 'physical_form': '139', 'social_type': '12'}
+# print(tichu.get_detail("physical_form"))
 # # 139
-# print(tichu.get_detail_str("physical_parts"))
-# # The physical part (board, cards, dice, supplementals, other) of Tichu is: cards, supplementals, other
+# print(tichu.get_detail_str("physical_form"))
+# # The physical form (board, cards, dice, supplementals, other) of Tichu is: cards, supplementals, other
 
 # tichu.ask_detail("min_duration")
 # # --> enter 4
