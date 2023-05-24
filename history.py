@@ -32,7 +32,7 @@ class History:
     """
 
     def __init__(self, name):
-        self.id = f"history_{datetime.now():%Y%m%d%H%M%S%f}"
+        self.history_id = f"history_{datetime.now():%Y%m%d%H%M%S%f}"
         self.name = name
     def __str__(self):
-        return f"Game:{self.name} (ID: {self.id})"
+        return f"Game:{self.name} (ID: {self.history_id})"
