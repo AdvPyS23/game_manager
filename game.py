@@ -1,5 +1,5 @@
 """
-This is a module containing the class game of the game manager and helper functions.
+This is a module containing the class Game of the game manager and helper functions.
 It is required to run the tool.
 
 Classes:
@@ -21,8 +21,22 @@ import pandas as pd
 ### GLOBAL CONSTANTS
 ###################################
 
+# Define all the details a game has information about
+GAME_DETAILS = ("min_num_players",
+                "max_num_players",
+                "min_duration",
+                "max_duration",
+                "min_age",
+                "complexity",
+                "difficulty",
+                "topic",
+                "skills",
+                "physical_parts",
+                "social_type")
+
 # Define the number of points to give for details such as complexity and difficulty
 NUM_POINTS =  10
+
 # Define the values to choose from for details such as topics, skills etc.
 TOPICS = {"0": "fantasy",
           "1": "science fiction",
@@ -54,25 +68,12 @@ SOCIAL_TYPES = {"0": "cooperative",
                 "3": "all_vs_all",
                 "9": "other"}
 
-# Define all the details a game has information about
-GAME_DETAILS = ("min_num_players",
-                "max_num_players",
-                "min_duration",
-                "max_duration",
-                "min_age",
-                "complexity",
-                "difficulty",
-                "topic",
-                "skills",
-                "physical_parts",
-                "social_type")
-
-# Definie data structure
-DETAILS_COLS = ("string",
+# Definie attributes for each detail
+DETAIL_ATTRIBUTES = ("string",
                 "type",
                 "allowed_values")
 
-# Create data frame with the details a game can have
+# Create data frame with the details a game can have and its attributes
 DETAIL_DF = pd.DataFrame(np.array([["minimum number of players", "int", ">=1"],
                                    ["maximum number of players", "int", ">=min_num_players"],
                                    ["minimum duration (minutes)", "int", ">=1"],
@@ -84,7 +85,7 @@ DETAIL_DF = pd.DataFrame(np.array([["minimum number of players", "int", ">=1"],
                                    [f"skill needed", "choice", "SKILLS"],
                                    [f"physical part", "choice", "PHYSICAL_PARTS"],
                                    [f"social type", "choice", "SOCIAL_TYPES"]]),
-                                columns = DETAILS_COLS,
+                                columns = DETAIL_ATTRIBUTES,
                                 index = GAME_DETAILS)
 
 ALLOWED_VALUES_DICT = {">=1":[">=1"],
