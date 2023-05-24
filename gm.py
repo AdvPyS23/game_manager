@@ -4,15 +4,15 @@ It requires the modules game, library, collection and history to run.
 """
 
 import os
-from datetime import datetime
-import numpy as np
-import pandas as pd
-import csv
-from game import Game, GAME_DETAILS
+#import numpy as np
+#import pandas as pd
+#import csv
+#from datetime import datetime
+#from game import Game, GAME_DETAILS
 from library import Library
-from collection import Collection
-from history import History
-    
+#from collection import Collection
+#from history import History
+
 
 # Change working directory to the path of the script
 DIR_PATH = os.path.dirname(os.path.abspath(__file__))
@@ -20,18 +20,20 @@ os.chdir(DIR_PATH)
 LIBRARY_PATH = "./library.gm"
 
 def main():
-    
+
     # Initiate object library (empty)
     library = Library()
     # If there is already a saved file for the library, load it
-    if os.path.isfile(LIBRARY_PATH): library.load(LIBRARY_PATH)
+    if os.path.isfile(LIBRARY_PATH):
+        library.load(LIBRARY_PATH)
 
     # Start the user interaction
     input(WELCOME_SCREEN)
     library = user_interaction(library)
 
     # Save the library into the file
-    if input("Do you want to save the library before you quit? Enter 'y' if so: ") == "y": library.save(LIBRARY_PATH)
+    if input("Do you want to save the library before you quit? Enter 'y' if so: ") == "y":
+        library.save(LIBRARY_PATH)
 
 
 WELCOME_SCREEN = '''
@@ -52,7 +54,8 @@ WELCOME_SCREEN = '''
 
 '''
 
-def command_screen(lib): return f'''
+def command_screen(lib):
+    return f'''
 
 ################################## GAME MANAGER ##################################
 
@@ -171,6 +174,3 @@ main()
 
 # tichu.ask_all_details()
 # print(tichu.get_all_details())
-
-
-

@@ -11,11 +11,11 @@ Functions:
 """
 
 from datetime import datetime
-from itertools import chain, repeat
+#from itertools import chain, repeat
 import os
 import csv
-import numpy as np
-import pandas as pd
+# import numpy as np
+# import pandas as pd
 
 ###################################
 ### GLOBAL CONSTANTS
@@ -59,7 +59,8 @@ class Collection:
     def __init__(self, name):
         self.id = f"col_{datetime.now():%Y%m%d%H%M%S%f}"
         self.name = name
-        if self.name == "library": self.id = "library"
+        if self.name == "library":
+            self.id = "library"
         self.dict = {}
         self.games_dict = {}
 
@@ -106,7 +107,7 @@ class Collection:
         """
         self.dict[game_id] = game_details
         return self.dict
-    
+
     def new_game(self):
         """
         _summary_
@@ -127,7 +128,7 @@ class Collection:
         """
         del self.dict[game_id]
         return self.dict
-    
+
     def get_game_ids(self):
         return self.dict.keys()
 
@@ -136,7 +137,7 @@ class Collection:
         for game_id, game_details in self.dict.items():
             out += str(game_id) + ": " + str(game_details) + "\n"
         return out
-    
+
     def print(self):
         """
         _summary_
@@ -146,9 +147,8 @@ class Collection:
         """
         for game_id, game_details in self.dict.items():
             print(game_id, game_details)
-    
+
 
 ###################################
 ### HELPER FUNCTIONS
 ###################################
-

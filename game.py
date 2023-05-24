@@ -10,10 +10,10 @@ Functions:
     _summary_
 """
 
-from datetime import datetime
+# from datetime import datetime
 from itertools import chain, repeat
-import os
-import csv
+# import os
+# import csv
 import numpy as np
 import pandas as pd
 
@@ -145,7 +145,7 @@ class Game:
 
     def __str__(self):
         return f"Game: {self.name} (ID: {self.id})"
-    
+
     def set_name(self, name):
         self.name = name
 
@@ -160,19 +160,24 @@ class Game:
         allowed_values = find_detail_attribute(detail, "allowed_values")
         error_message = f"The entered value ({value}) is not suitable for this type of detail ('{detail_type}').\
             Values must be {allowed_values}"
-        
+
         # Test, for the type of detail given, the value entered
         if detail_type == "int":
-            try: assert int(value) > 0
-            except AssertionError: print(error_message)
+            try:
+                assert int(value) > 0
+            except AssertionError:
+                print(error_message)
         elif detail_type == "int_range":
-            try: assert 1 <= int(value) <= NUM_POINTS
-            except AssertionError: print(error_message)
+            try:
+                assert 1 <= int(value) <= NUM_POINTS
+            except AssertionError:
+                print(error_message)
         elif detail_type == "choice":
             try:
                 value = sort_test_choice(value, allowed_values)
                 assert value
-            except AssertionError: print(error_message)
+            except AssertionError:
+                print(error_message)
         # If it's of no known type, raise a specific error
         else: raise ValueError(f"There was no test found for this detail type ({detail_type}). \
                                Nothing was changed. Try again.")
@@ -182,15 +187,17 @@ class Game:
     def set_multi_details(self, details_dict):
         for key, val in details_dict.items():
             self.set_detail(key, val)
-    
+
     def ask_detail(self, detail):
         # get the type, string and allowed values for this detail
         detail_type = find_detail_attribute(detail, "type")
         detail_string = find_detail_attribute(detail, "string")
-        allowed_values = find_detail_attribute(detail, "allowed_values")        
-        
-        if detail_type == "choice": valid_response = choice_input(detail_string, allowed_values)
-        else: valid_response = num_input(detail_type, detail_string, allowed_values)
+        allowed_values = find_detail_attribute(detail, "allowed_values")
+
+        if detail_type == "choice":
+            valid_response = choice_input(detail_string, allowed_values)
+        else:
+            valid_response = num_input(detail_type, detail_string, allowed_values)
 
         self.set_detail(detail, valid_response)
         return self.details
@@ -205,10 +212,10 @@ class Game:
         for detail in GAME_DETAILS:
             self.ask_detail(detail)
         return self.details
-    
+
     def get_id(self):
         return self.id
-    
+
     def get_name(self):
         return self.name
 
@@ -220,7 +227,7 @@ class Game:
             _type_: _description_
         """
         return self.details[detail]
-    
+
     def get_all_details(self):
         """
         _summary_
@@ -229,7 +236,7 @@ class Game:
             _type_: _description_
         """
         return self.details
-    
+
     def get_detail_str(self, detail):
         """
         _summary_
@@ -239,7 +246,7 @@ class Game:
         """
         detail_type = find_detail_attribute(detail, "type")
         detail_string = find_detail_attribute(detail, "string")
-        allowed_values = find_detail_attribute(detail, "allowed_values")        
+        allowed_values = find_detail_attribute(detail, "allowed_values")
 
         if detail_type == "choice":
             key_string = self.details[detail]
@@ -247,7 +254,7 @@ class Game:
         else:
             value_string = self.details[detail]
         return f"{detail_string}: {value_string}"
-        
+
     def get_all_details_str(self):
         """
         _summary_
@@ -256,7 +263,7 @@ class Game:
             _type_: _description_
         """
         return '\n'.join([self.get_detail_str(detail) for detail in self.details])
-        
+
 
 ###################################
 ### HELPER FUNCTIONS
@@ -307,7 +314,7 @@ def num_input(detail_type, detail_string, allowed_values):
 
     Returns:
         valid_response: a string containing the user input number
-    '''            
+    '''
     # Create an iterator of prompts (as strings)
     # with the first being the initial prompt for the detail
     # and possibly infinite requests for correcting the input
@@ -320,7 +327,7 @@ def num_input(detail_type, detail_string, allowed_values):
         valid_response = next(filter(lambda reply: (reply.isdigit() and int(reply)>0), replies))
     elif detail_type == "int_range":
         valid_response = next(filter(lambda reply: (reply.isdigit() and 1 <= int(reply) <= NUM_POINTS), replies))
-    
+
     return valid_response
 
 def sort_test_choice(input_num_string, allowed_values):
@@ -340,8 +347,10 @@ def sort_test_choice(input_num_string, allowed_values):
     nums = sorted(set(input_num_string))
     # Test if all numbers are in the allowed vlaues
     is_valid = np.all([num in allowed_values for num in nums])
-    if not is_valid: return False
-    else: return "".join(nums)
+    if not is_valid:
+        return False
+    else:
+        return "".join(nums)
 
 def find_detail_attribute(detail, attribute):
     '''
@@ -355,13 +364,19 @@ def find_detail_attribute(detail, attribute):
         output:     the found attribute for the detail
     '''
     if attribute == "type":
-        try: output = DETAIL_DF.loc[detail, "type"]
-        except: print(f"Type of this detail ({detail}) not found in the DETAIL_DF")
+        try:
+            output = DETAIL_DF.loc[detail, "type"]
+        except:
+            print(f"Type of this detail ({detail}) not found in the DETAIL_DF")
     elif attribute == "string":
-        try: output = DETAIL_DF.loc[detail, "string"]
-        except: print(f"String of this detail ({detail}) not found in the DETAIL_DF")
+        try:
+            output = DETAIL_DF.loc[detail, "string"]
+        except:
+            print(f"String of this detail ({detail}) not found in the DETAIL_DF")
     elif attribute == "allowed_values":
-        try: output = ALLOWED_VALUES_DICT[DETAIL_DF.loc[detail, "allowed_values"]]
-        except: print(f"Allowed values for this detail ({detail}) not found, \
-                      either in the DETAIL_DF or in the ALLOWED_VALUES_DICT")
+        try:
+            output = ALLOWED_VALUES_DICT[DETAIL_DF.loc[detail, "allowed_values"]]
+        except:
+            print(f"Allowed values for this detail ({detail}) not found, \
+                    either in the DETAIL_DF or in the ALLOWED_VALUES_DICT")
     return output
