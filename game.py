@@ -163,24 +163,18 @@ class Game:
 
         # Test, for the type of detail given, the value entered
         if detail_type == "int":
-            try:
-                assert int(value) > 0
-            except AssertionError:
-                print(error_message)
+            if (not value.isdigit()) or (int(value) > 0):
+                raise ValueError(error_message)
         elif detail_type == "int_range":
-            try:
-                assert 1 <= int(value) <= NUM_POINTS
-            except AssertionError:
-                print(error_message)
+            if (not value.isdigit()) or (not 1 <= int(value) <= NUM_POINTS):
+                raise ValueError(error_message)
         elif detail_type == "choice":
-            try:
-                value = sort_test_choice(value, allowed_values)
-                assert value
-            except AssertionError:
-                print(error_message)
+            value = sort_test_choice(value, allowed_values)
+            if value == "NOT VALID":
+                raise ValueError(error_message)
         # If it's of no known type, raise a specific error
         else:
-            raise ValueError(f"There was no test found for this detail type ({detail_type}). \
+            raise KeyError(f"This method is not prepared for this detail type ({detail_type}). \
                                Nothing was changed. Try again.")
         # If all tests are passed and no error raised, set the detail to the entered value
         self.details[detail] = value
@@ -350,7 +344,7 @@ def sort_test_choice(input_num_string, allowed_values):
     # Test if all numbers are in the allowed vlaues
     is_valid = np.all([num in allowed_values for num in nums])
     if not is_valid:
-        return False
+        return "NOT VALID"
     else:
         return "".join(nums)
 
@@ -365,27 +359,19 @@ def find_detail_attribute(detail, attribute):
     Returns:
         output:     String for the found attribute of the detail
     """
-    # Make sure the attribute given is valid (i.e. in the DETAIL_ATTRIBUTES)
-    output = None
-    try:
-        assert attribute in DETAIL_ATTRIBUTES
-    except AssertionError:
-        print("This is not a valid attribute.")
+    # Make sure the attribute and detail given are valid (i.e. in the DETAIL_ATTRIBUTES or GAME_DETAILS, resp.)
+    if attribute not in DETAIL_ATTRIBUTES:
+        raise KeyError("This is not a valid attribute.")
+    if detail not in GAME_DETAILS.values():
+        raise KeyError("This is not a valid detail.")
     # Find the attribute of the given detail
-    if attribute == "type":
-        try:
-            output = DETAIL_DF.loc[detail, "type"]
-        except:
-            print(f"Type of this detail ({detail}) not found in the DETAIL_DF")
-    elif attribute == "string":
-        try:
-            output = DETAIL_DF.loc[detail, "string"]
-        except:
-            print(f"String of this detail ({detail}) not found in the DETAIL_DF")
-    elif attribute == "allowed_values":
+    if attribute == "allowed_values":
         try:
             output = ALLOWED_VALUES_DICT[DETAIL_DF.loc[detail, "allowed_values"]]
-        except:
+        except KeyError:
             print(f"Allowed values for this detail ({detail}) not found, \
                     either in the DETAIL_DF or in the ALLOWED_VALUES_DICT")
+    else:
+        output = DETAIL_DF.loc[detail, attribute]
+    
     return output

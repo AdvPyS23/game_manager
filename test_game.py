@@ -13,16 +13,16 @@ class TestGame(unittest.TestCase):
         # Test multiple occurences
         self.assertEqual(sort_test_choice("7879", "0123456789"), "789")
         # Test for wrong input (not all digits in allowed values)
-        self.assertEqual(sort_test_choice("125", "0123"), False)
+        self.assertEqual(sort_test_choice("125", "0123"), "NOT VALID")
 
     def test_find_detail_attribute(self):
-        # Test wrong detail value
-        self.assertEqual(find_detail_attribute("wrong_value", "type"), None)
         # Test wrong attribute value
-        self.assertEqual(find_detail_attribute("topic", "wrong_value"), None)
-        # Test for aboth correct values (att = "type")
+        self.assertRaises(KeyError, find_detail_attribute, "topic", "wrong_value")
+        # Test wrong detail value
+        self.assertRaises(KeyError, find_detail_attribute, "wrong_detail", "type")
+        # Test for both correct values (att = "type")
         self.assertEqual(find_detail_attribute("topic", "type"), "choice")
-        # Test for aboth correct values (att = "string")
+        # Test for both correct values (att = "string")
         self.assertEqual(find_detail_attribute("topic", "string"), "topic")
         # Test for aboth correct values (att = "allowed_values")
         self.assertEqual(find_detail_attribute("topic", "allowed_values"), game.TOPICS)
@@ -30,6 +30,7 @@ class TestGame(unittest.TestCase):
         self.assertEqual(find_detail_attribute("complexity", "allowed_values"), ["1 - 10"])
         # Test for aboth correct values (att = "allowed_values", third type of detail)
         self.assertEqual(find_detail_attribute("min_age", "allowed_values"), [">=1"])
+
 
 if __name__ == "__main__":
     unittest.main()
