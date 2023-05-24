@@ -82,3 +82,20 @@ class Library:
             name = input("There is no game with this name in the library. Please enter a valid name: ")
         print("\n" + self.games[name].get_all_details_str())
     
+    def rename(self):
+        # Ask for the existing name of the game to change
+        name = input("Please enter the name of the game to rename. ")
+        while name not in self.games.keys():
+            name = input("There is no game with this name in the library. Please enter a valid name: ")
+        # Get the old id, it should be retained
+        id = self.games[name].get_id()
+        # Get all the details of the game
+        details = self.games[name].get_all_details()
+        # Ask for the new name, and make sure it does not yet exist
+        new_name = input("Please enter the name of the new game: ")
+        while new_name in self.games.keys():
+            new_name = input("There is already a game with this name in the library. Please enter another name: ")
+        # Delete the old game
+        self.games.pop(name)
+        # Create a new game with the same id and details but the new name
+        self.games[new_name] = Game(id, new_name, details)

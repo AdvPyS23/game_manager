@@ -14,23 +14,24 @@ from collection import Collection
 from history import History
     
 
+# Change working directory to the path of the script
+DIR_PATH = os.path.dirname(os.path.abspath(__file__))
+os.chdir(DIR_PATH)
+LIBRARY_PATH = "./library.gm"
+
 def main():
-    # Change working directory to the path of the script
-    dir_path = os.path.dirname(os.path.abspath(__file__))
-    os.chdir(dir_path)
-    library_path = "./library.gm"
     
-    # Initiate object library
+    # Initiate object library (empty)
     library = Library()
     # If there is already a saved file for the library, load it
-    if os.path.isfile(library_path): library.load(library_path)
+    if os.path.isfile(LIBRARY_PATH): library.load(LIBRARY_PATH)
 
     # Start the user interaction
     input(WELCOME_SCREEN)
     library = user_interaction(library)
 
     # Save the library into the file
-    library.save(library_path)
+    if input("Do you want to save the library before you quit? Enter 'y' if so: ") == "y": library.save(LIBRARY_PATH)
 
 
 WELCOME_SCREEN = '''
@@ -52,6 +53,7 @@ WELCOME_SCREEN = '''
 '''
 
 def command_screen(lib): return f'''
+
 ################################################################################
     
 Your library contains the following games:
@@ -63,9 +65,11 @@ Choose your option by typing one of the following commands into the console:
 - Add a new game:               "new"
 - See details of a game:        "see"
 - Modify a detail of a game:    "mod"
+- Rename a game:                "name"
 - Delete a game from library:   "del"
 
-- Save and quit:                "exit"
+- Save the library:             "save"
+- Quit:                         "exit"
 
 ################################################################################
 
@@ -81,6 +85,10 @@ def choose_action(command, lib):
     elif command == "see":
         lib.show_game()
         input("\nPress enter to continue...")
+    elif command == "save":
+        lib.save(LIBRARY_PATH)
+    elif command == "name":
+        lib.rename()
     elif command != "exit":
         print("This was not a valid command.")
         input("Press Enter to continue...")
