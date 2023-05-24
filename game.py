@@ -47,7 +47,7 @@ TOPICS = {"0": "fantasy",
 
 SKILLS = {"0": "logics",
           "1": "dexterity",
-          "2": "intuition",
+          "2": "speed/reaction",
           "3": "creativity",
           "4": "knowledge",
           "5": "strategy",
