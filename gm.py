@@ -12,13 +12,20 @@ import os
 from library import Library
 #from history import History
 
-
 # Change working directory to the path of the script
 DIR_PATH = os.path.dirname(os.path.abspath(__file__))
 os.chdir(DIR_PATH)
 LIBRARY_PATH = "./library.gm"
 
+
+###################################
+### MAIN FUNCTION RUNNING THE TOOL
+###################################
+
 def main():
+    """
+    Starts, runs and ends the tool
+    """
 
     # Initiate object library (empty)
     library = Library()
@@ -38,6 +45,10 @@ def main():
         library.save(LIBRARY_PATH)
 
 
+###################################
+### SCREEN DEFINITIONS
+###################################
+
 WELCOME_SCREEN = '''
                             Hi, welcome to 
 
@@ -55,6 +66,7 @@ WELCOME_SCREEN = '''
                         Press enter to continue ... 
 
 '''
+
 
 COMMAND_SCREEN = '''
 
@@ -78,6 +90,11 @@ Choose your option by typing one of the following commands into the console:
 ################################################################################
 
 '''
+
+
+###################################
+### HELPER FUNCTIONS
+###################################
 
 def choose_action(command, lib):
     '''
@@ -117,5 +134,10 @@ def user_interaction(lib):
         command_input = input(COMMAND_SCREEN.format(library_string = str(lib)))
         lib = choose_action(command_input, lib)
     return lib
+
+
+###################################
+### RUN MAIN FUNCTION
+###################################
 
 main()

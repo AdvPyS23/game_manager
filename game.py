@@ -148,13 +148,13 @@ class Game:
 
     def set_name(self, name):
         """
-        Sets the name of the game to the value (string) given
+        Sets the name of the game to the given value (string)
         """
         self.name = name
 
     def set_detail(self, detail, value):
         """
-        Sets the given detail to the value given
+        Sets the given detail to the given value
         """
         detail_type = find_detail_attribute(detail, "type")
         allowed_values = find_detail_attribute(detail, "allowed_values")
@@ -282,7 +282,7 @@ def choice_input(detail_string, allowed_values):
                         entered by the user
 
     Returns:
-        valid_response: a string containing the keys of the dictionary belonging to the detail of type "choice"
+        valid_response: String containing the keys of the dictionary belonging to the detail of type "choice"
     """
     # DOING THIS THE OLD FASHIONED WAY TO TRY OUT FUNCTIONALITY, JUST BECAUSE MY BRAIN CAN'T HANDLE CHAIN, REPEAT ETC. RIGHT NOW
     choice_checklist = '\n'.join([f'{k}: {v}' for k, v in allowed_values.items()])
@@ -312,10 +312,10 @@ def num_input(detail_type, detail_string, allowed_values):
     Inputs:
         detail_type:    String, "int" or "int_range"
         detail_string:  String of the detail (e.g. "minimum number of players")
-        allowed_values: A string describing what numbers are allowed
+        allowed_values: String describing what numbers are allowed
 
     Returns:
-        valid_response: a string containing the user input number
+        valid_response: String containing the user input number
     """
     # Create an iterator of prompts (as strings)
     # with the first being the initial prompt for the detail
@@ -334,14 +334,15 @@ def num_input(detail_type, detail_string, allowed_values):
 
 def sort_test_choice(input_num_string, allowed_values):
     """
-    Checks if the digits in the input string are all in the allowed values, returns them unique & sorted
+    Checks if the digits in the input string are all in the allowed values
+    Returns a string with the unique and sorted digits
     
     Inputs:
         input_string:   String to test (should only contain allowed digits)
-        allowed_values: The values (digits) that are allowed in the input string
+        allowed_values: List of values (digits) that are allowed in the input string
     
     Returns:
-        IF TEST PASSED: A string containing the sorted and unique digits of the input string
+        IF TEST PASSED: String containing the sorted and unique digits of the input string
         IF TEST FAILS:  False
     """
     # Take apart the numbers (still as strings), remove duplicates and sort
@@ -359,10 +360,10 @@ def find_detail_attribute(detail, attribute):
     ... in the DETAIL_DF (and ALLOWED_VALUES_DICT) and returns it
 
     Inputs:
-        detail:     Which detail to test
-        attribute:  Which attribute to test (should be "type", "string" or "allowed_values")
+        detail:     String for the detail to test
+        attribute:  String for the attribute to test (should be "type", "string" or "allowed_values")
     Returns:
-        output:     The found attribute for the detail
+        output:     String for the found attribute of the detail
     """
     # Make sure the attribute given is valid (i.e. in the DETAIL_ATTRIBUTES)
     output = None

@@ -19,6 +19,10 @@ from datetime import datetime
 from game import Game, GAME_DETAILS
 
 
+###################################
+### CLASS DEFINITION
+###################################
+
 class Library:
     """
     This is the class for a game library.
@@ -112,7 +116,7 @@ class Library:
         # Create a new game with the same id and details but the new name
         self.games[new_name] = Game(gm_id, new_name, details)
 
-    def ask_name(self, input_string):
+    def ask_name(self, input_string = "What is the name of the game? "):
         """
         Asks the user to give a name of a game in the library; repeats until succeeds
         """
@@ -122,7 +126,7 @@ class Library:
             name = input("There is no game with this name in the library.\nPlease enter a valid name (case sensitive): ")
         return name
 
-    def ask_new_name(self, input_string):
+    def ask_new_name(self, input_string = "What is the name of the game? "):
         """
         Asks the user to give a name of a new game, i.e. NOT already in the library; repeats until succeeds
         """
@@ -131,6 +135,11 @@ class Library:
         while new_name in self.games.keys():
             new_name = input("There is already a game with this name in the library.\nPlease enter another name: ")
         return new_name
+
+
+###################################
+### HELPER FUNCTIONS
+###################################
 
 def choose_detail():
     """
