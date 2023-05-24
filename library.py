@@ -39,7 +39,7 @@ class Library:
             for game in reader:
                 id, name, detail_string = game
                 details = detail_string.split(",")
-                detail_dict = dict(zip(GAME_DETAILS, details))
+                detail_dict = dict(zip(GAME_DETAILS.values(), details))
                 self.games[name] = Game(id, name, detail_dict)
     
     def save(self, library_path):
@@ -66,9 +66,7 @@ class Library:
     
     def modify(self):
         name = self.ask_name("Please enter the name of the game to change. ")
-        detail = input("Please enter the detail of the game to change. ")
-        while detail not in GAME_DETAILS:
-            detail = input("There is no such detail. Please enter a valid detail: ")
+        detail = choose_detail()
         self.games[name].ask_detail(detail)
 
     def show(self):
@@ -102,3 +100,9 @@ class Library:
         while new_name in self.games.keys():
             new_name = input("There is already a game with this name in the library. Please enter another name: ")
         return new_name
+
+def choose_detail():
+    detail_checklist = '\n'.join([f'{det_letter}: {det_str}' for det_letter, det_str in GAME_DETAILS.items()])
+    detail_key = input("Choose a detail (enter a single letter):\n" + detail_checklist)
+    detail = GAME_DETAILS[detail_key]
+    return detail
