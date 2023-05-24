@@ -369,6 +369,7 @@ def find_detail_attribute(detail, attribute):
         output:     The found attribute for the detail
     '''
     # Make sure the attribute given is valid (i.e. in the DETAIL_ATTRIBUTES)
+    output = None
     try:
         assert attribute in DETAIL_ATTRIBUTES
     except AssertionError:
