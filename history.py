@@ -1,11 +1,8 @@
 """
-This is the main script to run the game manager.
+This is a module containing the class History of the game manager and helper functions.
+It is required to run the tool.
 
 Classes:
-    Game
-        _summary_
-    Collection
-        _summary_
     History
         _summary_
 
@@ -13,6 +10,7 @@ Functions:
     _summary_
 """
 
+from datetime import datetime
 
 class History:
     """
@@ -38,4 +36,3 @@ class History:
         self.name = name
     def __str__(self):
         return f"Game:{self.name} (ID: {self.id})"
-
