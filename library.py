@@ -51,7 +51,7 @@ class Library:
                 name = game.get_name()
 ### MAYBE CHECK THAT NO GAME OBJECT HAS DIFFERENT NAME THAN ENTRY IN LIBRARY...
                 details = ",".join(game.get_all_details().values())
-                writer.writerow([gm_id, name, details])    
+                writer.writerow([gm_id, name, details])
 
     def add(self):
         gm_id = f"game_{datetime.now():%Y%m%d%H%M%S%f}"

@@ -1,6 +1,6 @@
 """
 This is the file to run the game manager.
-It requires the modules game, library, collection and history to run.
+It requires the modules game, library and history to run.
 """
 
 import os
@@ -10,7 +10,6 @@ import os
 #from datetime import datetime
 #from game import Game, GAME_DETAILS
 from library import Library
-#from collection import Collection
 #from history import History
 
 
@@ -109,71 +108,3 @@ def user_interaction(lib):
     return lib
 
 main()
-
-
-
-
-###################################
-### TESTS
-###################################
-
-# tichu = Game("Tichu")
-# print(tichu)
-# # Game: Tichu (ID: game_*
-# tichu.set_detail("min_num_players", 3)
-# print(tichu.get_detail("min_num_players"))
-# # 3
-# tichu.set_detail("min_num_players", 0)
-# # Error
-# print(tichu.get_detail("min_num_players"))
-# # 3
-# #### !!!!!!!!!!!!!   WRONG RESULT   !!!!!!!!!!!!! #############
-# tichu.set_detail("max_num_players", 24)
-# print(tichu.get_detail("max_num_players"))
-# # 24
-# tichu.set_detail("complexity", 7)
-# print(tichu.get_detail("complexity"))
-# # 7
-# tichu.set_detail("complexity", 24)
-# # Error
-# print(tichu.get_detail("complexity"))
-# # 7
-# #### !!!!!!!!!!!!!   WRONG RESULT   !!!!!!!!!!!!! #############
-# tichu.set_detail("social_type", "13")
-# print(tichu.get_detail("social_type"))
-# # 13
-# print(tichu.get_detail_str("social_type"))
-# # The social type (cooperative, one_vs_all, teams, all_vs_all, other) of Tichu is: one_vs_all, all_vs_all
-
-
-# details_in = {"min_num_players": "2",
-#               "max_num_players": "6",
-#               "min_duration": "60",
-#               "max_duration": "120",
-#               "min_age": "12",
-#               "complexity": "5",
-#               "difficulty": "9",
-#               "topic": "1",
-#               "skills": "23",
-#               "physical_form": "9319",
-#               "social_type": "21"}
-# tichu.set_multi_details(details_in)
-# print(tichu.get_all_details())
-# # {'min_num_players': '2', 'max_num_players': '6', 'min_duration': '60', 'max_duration': '120',
-# # 'min_age': '12', 'complexity': '5', 'difficulty': '9', 'topic': '1', 'skills': '23',
-# # 'physical_form': '139', 'social_type': '12'}
-# print(tichu.get_detail("physical_form"))
-# # 139
-# print(tichu.get_detail_str("physical_form"))
-# # The physical form (board, cards, dice, supplementals, other) of Tichu is: cards, supplementals, other
-
-# tichu.ask_detail("min_duration")
-# # --> enter 4
-# print(tichu.get_detail("min_duration"))
-# # 4
-
-# tichu.ask_detail("social_type")
-# print(tichu.get_detail("min_duration"))
-
-# tichu.ask_all_details()
-# print(tichu.get_all_details())

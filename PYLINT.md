@@ -1,4 +1,4 @@
-# pylint output bevore changes
+# pylint output before changes
 *<span style="color:red">not changed</span>    
 <span style="color:green">changed</span>*
 
