@@ -54,8 +54,8 @@ WELCOME_SCREEN = '''
 
 def command_screen(lib): return f'''
 
-################################################################################
-    
+################################## GAME MANAGER ##################################
+
 Your library contains the following games:
 
 {str(lib)}
@@ -83,7 +83,7 @@ def choose_action(command, lib):
     elif command == "mod":
         lib.modify()
     elif command == "see":
-        lib.show_game()
+        lib.show()
         input("\nPress enter to continue...")
     elif command == "save":
         lib.save(LIBRARY_PATH)

@@ -71,9 +71,9 @@ class Library:
             detail = input("There is no such detail. Please enter a valid detail: ")
         self.games[name].ask_detail(detail)
 
-    def show_game(self):
+    def show(self):
         name = self.ask_name("Please enter the name of the game to see. ")
-        print("\n" + self.games[name].get_all_details_str())
+        print("\n=== " + name + " ===\n" + self.games[name].get_all_details_str())
     
     def rename(self):
         # Ask for the existing name of the game to change

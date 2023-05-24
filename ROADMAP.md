@@ -33,7 +33,7 @@ Welcome to Game Manager, a little python tool to organise your social games. For
 
 Event / Task | Deadline
 --- | ---
-Choose a project; Project management; GitHub     | Deadline: April 27
+Choose a project; Project management; GitHub    | Deadline: April 27
 First deliverable                               | Deadline: May 4
 Second deliverable; Classes; Refactoring        | Deadline: May 11
 Third deliverable; Unit tests; Issues           | Deadline: May 18
@@ -42,7 +42,7 @@ Presentation (in person and in class)           | Deadline: June 1
 
 
 ## Tasks
-- [ ] Define link between collection and game; how to store games?
+- [x] Define link between collection and game; how to store games?
 - [x] Optimise ask_detail; e.g. multiple inputs for "choice" type
-- [ ] Work on user interface in gm.py
+- [x] Work on user interface in gm.py
 - [ ] Add history

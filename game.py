@@ -246,7 +246,7 @@ class Game:
             value_string = ", ".join([allowed_values[num] for num in key_string])
         else:
             value_string = self.details[detail]
-        return f"The {detail_string} of {self.name} is: {value_string}"
+        return f"{detail_string}: {value_string}"
         
     def get_all_details_str(self):
         """
