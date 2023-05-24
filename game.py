@@ -148,13 +148,13 @@ class Game:
 
     def set_name(self, name):
         """
-        Sets the name of the game to the value (string) given
+        Sets the name of the game to the given value (string)
         """
         self.name = name
 
     def set_detail(self, detail, value):
         """
-        Sets the given detail to the value given
+        Sets the given detail to the given value
         """
         detail_type = find_detail_attribute(detail, "type")
         allowed_values = find_detail_attribute(detail, "allowed_values")
