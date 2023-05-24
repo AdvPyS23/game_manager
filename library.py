@@ -93,14 +93,14 @@ class Library:
         # Ask for the existing name of the game to change
         name = input(input_string)
         while name not in self.games.keys():
-            name = input("There is no game with this name in the library. Please enter a valid name (case sensitive): ")
+            name = input("There is no game with this name in the library.\nPlease enter a valid name (case sensitive): ")
         return name
 
     def ask_new_name(self, input_string):
         # Ask for the new name, and make sure it does not yet exist
         new_name = input(input_string)
         while new_name in self.games.keys():
-            new_name = input("There is already a game with this name in the library. Please enter another name: ")
+            new_name = input("There is already a game with this name in the library.\nPlease enter another name: ")
         return new_name
 
 def choose_detail():
