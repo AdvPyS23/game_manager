@@ -10,6 +10,7 @@ Functions:
     _summary_
 """
 
+from datetime import datetime
 
 class History:
     """
@@ -35,4 +36,3 @@ class History:
         self.name = name
     def __str__(self):
         return f"Game:{self.name} (ID: {self.id})"
-
