@@ -19,6 +19,10 @@ from datetime import datetime
 from game import Game, GAME_DETAILS
 
 
+###################################
+### CLASS DEFINITION
+###################################
+
 class Library:
     """
     This is the class for a game library.
@@ -131,6 +135,11 @@ class Library:
         while new_name in self.games.keys():
             new_name = input("There is already a game with this name in the library.\nPlease enter another name: ")
         return new_name
+
+
+###################################
+### HELPER FUNCTIONS
+###################################
 
 def choose_detail():
     """
