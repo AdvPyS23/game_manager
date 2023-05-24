@@ -38,8 +38,9 @@ def main():
 
     # Save the library into the file if user chooses to do so
     save = input("Do you want to save the library before you quit?\nEnter 'y' or 'n': ")
-    while save != "y" and save != "n":
-        save = input("That didn't work, please try again.\nEnter 'y' for saving and 'n' for not saving: ")
+    while save not in ("y", "n"):
+        save = input("That didn't work, please try again.\
+                     \nEnter 'y' for saving and 'n' for not saving: ")
     if save == "y":
         library.save(LIBRARY_PATH)
 

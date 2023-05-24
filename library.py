@@ -31,7 +31,7 @@ class Library:
     """
 
     def __init__(self):
-        self.games = dict()
+        self.games = {}
 
     def __str__(self):
         return "    * " + "\n    * ".join(self.games.keys())
@@ -41,7 +41,7 @@ class Library:
         Loads a library from a file given by library_path and creates all games defined in the file
         """
         # Go through all games and create instances for them inside the library dict
-        with open(library_path, "r") as library_file:
+        with open(library_path, "r", encoding='UTF8') as library_file:
             reader = csv.reader(library_file)
             for game in reader:
                 gm_id, name, detail_string = game
@@ -122,7 +122,7 @@ class Library:
         """
         # Ask for the existing name of the game to change
         name = input(input_string)
-        while name not in self.games.keys():
+        while name not in self.games:
             name = input("There is no game with this name in the library.\nPlease enter a valid name (case sensitive): ")
         return name
 
@@ -132,7 +132,7 @@ class Library:
         """
         # Ask for the new name, and make sure it does not yet exist
         new_name = input(input_string)
-        while new_name in self.games.keys():
+        while new_name in self.games:
             new_name = input("There is already a game with this name in the library.\nPlease enter another name: ")
         return new_name
 
@@ -147,7 +147,7 @@ def choose_detail():
     """
     detail_checklist = '\n'.join([f'{det_letter}: {det_str}' for det_letter, det_str in GAME_DETAILS.items()])
     detail_key = input("\nChoose a detail (enter a single letter):\n" + detail_checklist + "\n\n")
-    while detail_key not in GAME_DETAILS.keys():
+    while detail_key not in GAME_DETAILS:
         detail_key = input("\nThat didn't work. Try again (enter a single letter):\n")
     detail = GAME_DETAILS[detail_key]
     return detail
