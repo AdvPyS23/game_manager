@@ -20,11 +20,10 @@ Ex.: "4,6,45,60,14,6,7,12,29,01,1"
 
 
 
-id	--> wozu? wo gespeichert? wenn neues game object aus library geladen?
-	--> nur eintrag in library? Oder ganz weglassen, und nur name gebrauchen?
+id	--> wozu? wo gespeichert? wenn neues game object aus library geladen? --> JA
+	--> nur eintrag in library? Oder ganz weglassen, und nur name gebrauchen? --> NEIN, in game und file (aber nicht zusätzlich in Objekt library)
 
-FRAGE: UMBENENNEN ?
+ID = unänderbar, aber gemacht, wenn in library eingetragen (NICHT wenn Objekt generiert...)
+Name = änderbar (aber zwingend einzigartig)
 
-Vermutlich: ID = unänderbar, aber gemacht, wenn in library eingetragen, NICHT wenn Objekt generiert...
-Name: änderbar (aber zwingend einzigartig)
---> umbenennen = neuer Eintrag in library mit der gleichen ID (& details), aber neuem Namen --> alten löschen
+Umbenennen = neuer Eintrag in library mit der gleichen ID (& details), aber neuem Namen --> alten löschen

@@ -4,26 +4,32 @@
 
 Variable        | Type      | Unit/Entry
 ----------------|-----------|-----------
-self.id         | string    | game_%Y%m%d%H%M%S%f
+self.gm_id      | string    | game_%Y%m%d%H%M%S%f
 self.name       | string    | required
-self.details:
-*min_num_players* | int       | >= 1
-*max_num_players* | int       | >= min_num_players
-*min_duration*    | int       | minutes, >= 1
-*max_duration*    | int       | minutes, >= min_duration
-*min_age*         | int       | years, >= 1
-*complexity*      | int-range | 1 - NUM_POINTS
-*difficulty*      | int-range | 1 - NUM_POINTS
-*topic*           | string    | Fantasy, Science Fiction, Real World, Abstract, Adaptation, other
-*skills*          | string    | Logics, Dexterity, Intuition, Creativity, Knowledge, Strategy, Negotiation, Luck, Roleplay
-*physical_form*   | string    | board, cards, dice, supplementals, other
-*social_type*     | string    | cooperative, 1_v_all, teams, all_v_all, *other*
+self.details:   | dictionary | detail:value
+*min_num_players* | *int*       | *>= 1*
+*max_num_players* | *int*       | *>= min_num_players*
+*min_duration*    | *int*       | *minutes, >= 1*
+*max_duration*    | *int*       | *minutes, >= min_duration*
+*min_age*         | *int*       | *years, >= 1*
+*complexity*      | *int-range* | *1 - NUM_POINTS*
+*difficulty*      | *int-range* | *1 - NUM_POINTS*
+*topic*           | *string*    | *Fantasy, Science Fiction, Real World, Abstract, Adaptation, other*
+*skills*          | *string*    | *Logics, Dexterity, Speed/Reaction, Creativity, Knowledge, Strategy, Negotiation, Luck, Roleplay, other*
+*physical_form*   | *string*    | *board, cards, dice, supplementals, other*
+*social_type*     | *string*    | *cooperative, 1_v_all, teams, all_v_all, other*
+
+
+<br>
+
 
 ## Library (dictionary storing games, saved in file library.gm)
 
 Keys:   string, name of the game (ensured to be equal to the name of the game objects)
 
 Values: instance of class game (given the id and name by the library)
+
+<br>
 
 ## History (df saved in file history.gmhist)
 Variable        | Type     | Unit/Entry
