@@ -373,5 +373,4 @@ def find_detail_attribute(detail, attribute):
                     either in the DETAIL_DF or in the ALLOWED_VALUES_DICT")
     else:
         output = DETAIL_DF.loc[detail, attribute]
-    
     return output
