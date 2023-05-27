@@ -31,6 +31,5 @@ class TestGame(unittest.TestCase):
         # Test for aboth correct values (att = "allowed_values", third type of detail)
         self.assertEqual(find_detail_attribute("min_age", "allowed_values"), [">=1"])
 
-
 if __name__ == "__main__":
     unittest.main()
