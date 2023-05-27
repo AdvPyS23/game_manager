@@ -17,7 +17,7 @@ class TestGame(unittest.TestCase):
 
     def test_find_detail_attribute(self):
         # Test wrong attribute value
-        self.assertRaises(KeyError, find_detail_attribute, "topic", "wrong_value")
+        self.assertRaises(KeyError, find_detail_attribute, "topic", "wrong_attr")
         # Test wrong detail value
         self.assertRaises(KeyError, find_detail_attribute, "wrong_detail", "type")
         # Test for both correct values (att = "type")

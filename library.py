@@ -120,7 +120,7 @@ class Library:
         """
         Asks the user to give a name of a game in the library; repeats until succeeds
         """
-        # Ask for the existing name of the game to change
+        # Ask for the existing name of the game
         name = input(input_string)
         while name not in self.games:
             name = input("There is no game with this name in the library.\nPlease enter a valid name (case sensitive): ")
