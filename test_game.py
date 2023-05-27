@@ -23,7 +23,7 @@ class TestGame(unittest.TestCase):
         # Test for both correct values (att = "type")
         self.assertEqual(find_detail_attribute("topic", "type"), "choice")
         # Test for both correct values (att = "string")
-        self.assertEqual(find_detail_attribute("topic", "string"), "topic")
+        self.assertEqual(find_detail_attribute("min_age", "string"), "minimum age (years)")
         # Test for aboth correct values (att = "allowed_values")
         self.assertEqual(find_detail_attribute("topic", "allowed_values"), game.TOPICS)
         # Test for aboth correct values (att = "allowed_values", different type of detail)
