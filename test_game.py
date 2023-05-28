@@ -17,14 +17,14 @@ class TestGame(unittest.TestCase):
 
     def test_find_detail_attribute(self):
         # Test wrong attribute value
-        self.assertRaises(KeyError, find_detail_attribute, "topic", "wrong_value")
+        self.assertRaises(KeyError, find_detail_attribute, "topic", "wrong_attr")
         # Test wrong detail value
         self.assertRaises(KeyError, find_detail_attribute, "wrong_detail", "type")
         # Test for both correct values (att = "type")
         self.assertEqual(find_detail_attribute("topic", "type"), "choice")
         # Test for both correct values (att = "string")
-        self.assertEqual(find_detail_attribute("topic", "string"), "topic")
-        # Test for both correct values (att = "allowed_values")
+        self.assertEqual(find_detail_attribute("min_age", "string"), "minimum age (years)")
+        # Test for aboth correct values (att = "allowed_values")
         self.assertEqual(find_detail_attribute("topic", "allowed_values"), game.TOPICS)
         # Test for both correct values (att = "allowed_values", different type of detail)
         self.assertEqual(find_detail_attribute("complexity", "allowed_values"), ["1 - 10"])
